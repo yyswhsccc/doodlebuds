@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DOODLEBUDS — a pixel creature collection · Yongshan Yu</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>
   /* ————————————————————————————————————————————————
      DOODLEBUDS portfolio v2
@@ -715,8 +717,15 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
     if (e.q) say.push(e.q);
     (EXTRA_SAY[key] || []).forEach((s) => say.push(s));
     say.push('bud!', '♡');
-    let x = 160, y = 90, fxveil = null;
+    let x = 160, y = 90, fxveil = null, baby = null;
     if (key === 'darkmode') { fxveil = document.createElement('div'); fxveil.className = 'fxveil'; fx.appendChild(fxveil); }
+    if (key === 'pointer') { // the LIVE pink baby is the show — ported from home
+      baby = document.createElement('img');
+      baby.className = 'px';
+      baby.src = 'assets/characters-full/sp-pointer-f1.png';
+      baby.style.cssText = 'position:absolute; width:44px; z-index:4; filter: sepia(1) saturate(4.5) hue-rotate(285deg) brightness(1.1); transition: left 2.6s ease, top 2.6s ease;';
+      port.insertBefore(baby, walk);
+    }
     const move = () => {
       const W = port.clientWidth || 420;
       const nx = 14 + Math.random() * (W - 128), ny = 12 + Math.random() * 130;
@@ -724,6 +733,7 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
       x = nx; y = ny;
       walk.style.left = nx + 'px'; walk.style.top = ny + 'px';
       if (fxveil) { fxveil.style.left = (nx - 42) + 'px'; fxveil.style.top = (ny - 30) + 'px'; }
+      if (baby) setTimeout(() => { try { baby.style.left = (nx - 34) + 'px'; baby.style.top = (ny + 52) + 'px'; } catch (er) {} }, 800); // it toddles, it lags, it arrives
     };
     walk.style.left = x + 'px'; walk.style.top = y + 'px';
     move();
