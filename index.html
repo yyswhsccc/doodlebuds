@@ -81,6 +81,50 @@
   .budcell .nm { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); font-family: 'Courier New', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.3s 0.2s; white-space: nowrap; }
   .budcell.pop .nm { opacity: 0.85; }
 
+  /* ——— dossier modal (the site's pikdex card, re-cut in this book's cloth) ——— */
+  .budcell { cursor: pointer; }
+  .budcell::after { content: ''; position: absolute; inset: 6%; border: 3px solid transparent; border-radius: 50%; transition: border-color 0.25s; }
+  .budcell:hover::after { border-color: var(--red); }
+  .petfield-head { display: flex; align-items: baseline; gap: 18px; margin: 9vh 0 26px; flex-wrap: wrap; }
+  .petfield-head h3 { font-size: clamp(22px, 3.4vw, 40px); font-weight: 900; letter-spacing: -0.01em; }
+  .petfield-head .mono { font-size: 12.5px; color: var(--red); font-weight: 700; letter-spacing: 0.2em; }
+  .budcell.is-pet .dot { border-radius: 50%; background: var(--ink) !important; }
+  .budcell.is-pet .nm { font-size: 9.5px; }
+  .dos-overlay {
+    position: fixed; inset: 0; z-index: 900; background: rgba(17, 17, 17, 0.62);
+    display: none; align-items: center; justify-content: center; padding: 4vh 4vw;
+  }
+  .dos-overlay.open { display: flex; }
+  .dossier {
+    width: min(440px, 94vw); max-height: 92svh; overflow-y: auto; background: #fff;
+    border: 4px solid var(--ink); box-shadow: 16px 16px 0 var(--red);
+    animation: dos-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes dos-pop { 0% { transform: scale(0.82) rotate(-1.6deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+  .dos-head { display: flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 2; }
+  .dos-head .t { font-weight: 900; font-size: 19px; letter-spacing: 0.02em; }
+  .dos-head .t em { font-style: normal; color: var(--red); }
+  .dos-head .hrt { color: var(--red); font-size: 17px; }
+  .dos-close { margin-left: auto; width: 30px; height: 30px; background: var(--red); color: #fff; border: 0; font-weight: 900; font-size: 15px; cursor: pointer; }
+  .dos-port { position: relative; padding: 26px 0 12px; text-align: center; background-image: radial-gradient(rgba(17, 17, 17, 0.14) 4px, transparent 5px); background-size: 34px 34px; border-bottom: 3px solid var(--ink); }
+  .dos-port img { width: 150px; margin: 0 auto; image-rendering: pixelated; }
+  .dos-port .stars { font-family: 'Courier New', monospace; font-weight: 700; color: var(--red); letter-spacing: 3px; margin-top: 8px; }
+  .dos-forms { display: flex; justify-content: center; gap: 10px; padding: 12px 10px; border-bottom: 3px solid var(--ink); background: var(--cream); }
+  .dos-forms button { background: none; border: 2.5px solid transparent; padding: 4px; cursor: pointer; }
+  .dos-forms button.on { border-color: var(--red); }
+  .dos-forms img { width: 34px; display: block; image-rendering: pixelated; }
+  .dos-body { padding: 18px 20px 22px; }
+  .dos-duty { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; }
+  .dos-duty b { color: var(--red); }
+  .dos-story { font-size: 14px; line-height: 1.65; color: #333; margin-top: 12px; }
+  .dos-quote { font-family: 'Courier New', monospace; font-style: italic; font-size: 13.5px; color: var(--red); font-weight: 700; margin-top: 12px; }
+  .dos-stats { margin-top: 16px; display: grid; grid-template-columns: 52px 1fr 40px; gap: 7px 10px; align-items: center; }
+  .dos-stats .lb { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; }
+  .dos-stats .vl { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; text-align: right; color: #666; }
+  .dos-bar { height: 13px; border: 2px solid var(--ink); background: #fff; }
+  .dos-bar i { display: block; height: 100%; background: repeating-linear-gradient(45deg, var(--ink) 0 6px, var(--red) 6px 12px); }
+  @media (prefers-reduced-motion: reduce) { .dossier { animation: none; } }
+
   /* ——— THEATRE panels ——— */
   .theatre { background: var(--cream); border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink); }
   .stagewrap { display: flex; flex-direction: column; gap: 11vh; padding: 4vh 7vw 14vh; }
@@ -348,8 +392,28 @@
   </div>
   <div class="field">
     <div class="field-grid" id="fieldGrid"></div>
+    <div class="petfield-head">
+      <h3>+ THE HIDDEN KINDS.</h3>
+      <span class="mono">22 DESK PETS · RARE PULLS · CLICK ANY OF THE 72 FOR ITS FILE</span>
+    </div>
+    <div class="field-grid" id="petGrid"></div>
   </div>
 </section>
+
+<!-- ———————————————— DOSSIER MODAL ———————————————— -->
+<div class="dos-overlay" id="dosOverlay">
+  <div class="dossier" role="dialog" aria-modal="true">
+    <div class="dos-head"><span class="t" id="dosName"></span><span class="hrt">♥</span><button class="dos-close" id="dosClose" aria-label="close">✕</button></div>
+    <div class="dos-port"><img id="dosImg" alt=""><div class="stars" id="dosStars"></div></div>
+    <div class="dos-forms" id="dosForms"></div>
+    <div class="dos-body">
+      <div class="dos-duty" id="dosDuty"></div>
+      <div class="dos-story" id="dosStory"></div>
+      <div class="dos-quote" id="dosQuote"></div>
+      <div class="dos-stats" id="dosStats"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ———————————————— THEATRE ———————————————— -->
 <section class="theatre">
@@ -585,8 +649,65 @@
       '<div class="dot" style="background:hsl(' + HUES[i] + ' 78% 62%)"></div>' +
       '<img class="px" loading="lazy" src="assets/characters-full/' + id + '-s2.png" alt="' + NAMES[i] + '">' +
       '<div class="nm">' + NAMES[i] + '</div>';
+    c.addEventListener('click', () => dosOpen('w', i));
     grid.appendChild(c);
   }
+const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "g": "plays a stuck dead pixel refusing to move; reveals RGB subpixels", "q": "do NOT rub me"}, {"n": "Cursor", "d": "the blinking text caret", "g": "blinks in and out like a typing text caret", "q": "end of line."}, {"n": "Sprite", "d": "the game-animation sheet", "g": "walks in chunky stop-motion frames like an animation sheet", "q": "smooth at 2 fps ♡"}, {"n": "Voxel", "d": "a pixel that discovered depth", "g": "dramatically debuts its third dimension", "q": "NOW IN 3D"}, {"n": "Glyph", "d": "a character in search of a font", "g": "renders as tofu boxes until its font is found", "q": "font not found…"}, {"n": "Chip", "d": "the silicon itself", "g": "doubles its transistor count on schedule, visibly growing", "q": "every 2 years. i am the law"}, {"n": "Bit", "d": "the least significant, allegedly", "g": "the least significant bit demands respect for its math", "q": "without me: WRONG MATH. respect."}, {"n": "Nibble", "d": "half a byte, looking for its other half", "g": "finds a partner to complete one full byte", "q": "+ you = 1 BYTE ♡"}, {"n": "Byte", "d": "8 bits, 256 moods", "g": "counts up to 255 and overflows back to zero, reborn", "q": "i overflowed. i am reborn ♡"}, {"n": "Cache", "d": "blazing fast, occasionally wrong", "g": "serves one instant cache hit and one shameful disk miss", "q": "shameful. fetching from disk"}, {"n": "Cookie", "d": "sweet, and it tracks you", "g": "serves a consent banner where both buttons say yes", "q": "accept cookies? [yes] [yes]"}, {"n": "Cookie++", "d": "the second cookie. accepted twice.", "g": "the consent banner you agreed to twice — it remembers both times, fondly, forever", "q": "accept all? accept all."}, {"n": "Token", "d": "expires when you need it most", "g": "expires and begs re-auth; plants a canary token on a colleague", "q": "alive for ONE more hour ♡"}, {"n": "Packet", "d": "hops with a hop limit", "g": "wanders while its TTL counter drains hop by hop", "q": "every hop costs me ♡"}, {"n": "Ping", "d": "the round-trip artist", "g": "volleys PING-PONG round trips with a neighbor", "q": "rtt 0.3ms. beautiful."}, {"n": "Modem", "d": "the 56k screamer", "g": "screeches through dial-up handshake; loses the line to the phone", "q": "mom needed the landline."}, {"n": "Router", "d": "forwards things. blames DNS", "g": "hands out DHCP addresses; files a postmortem blaming DNS", "q": "it is ALWAYS dns."}, {"n": "Widget", "d": "lives for engagement", "g": "begs passersby to click, harvesting engagement", "q": "engagement metrics: you ♡"}, {"n": "Kernel", "d": "ring 0 royalty", "g": "holds royal audience granting syscalls; turns ghostly in ring 0", "q": "userspace ♡ approach"}, {"n": "Daemon", "d": "background, unkillable, beloved", "g": "detaches into the background and shrugs off kill -9", "q": "cannot be killed. only loved"}, {"n": "Cron", "d": "scheduled, punctual, martyred at 3am", "g": "paged at 3am to hotfix prod; suffers timezone and maintenance windows", "q": "at 3am?! on my way"}, {"n": "Bash", "d": "the shell itself", "g": "fake rm -rf scare, sudo !! magic, tab-complete teleport", "q": "relax. no --no-preserve-root"}, {"n": "Grep", "d": "finds ANYTHING", "g": "chases a hopping bug across the desktop until one match found", "q": "nothing escapes the pattern"}, {"n": "Regex", "d": "powerful, catastrophic", "g": "catastrophically backtracks validating one email; lints a colleague mercilessly", "q": "valid. it took 4 years"}, {"n": "Lambda", "d": "no name, no server, no patience", "g": "suffers a cold start, then sprints and bills you; proudly nameless", "q": "i have no name. only purpose."}, {"n": "Stack", "d": "grows downward emotionally", "g": "stacks clones skyward until STACK OVERFLOW collapses the tower", "q": "STACK OVERFLOW"}, {"n": "Heap", "d": "fragmented but generous", "g": "heap balloons with a memory leak until GC shrinks it back", "q": "collected. i feel light ♡"}, {"n": "Queue", "d": "order is sacred", "g": "herds two passersby into a numbered FIFO queue", "q": "now serving #1. no cutting."}, {"n": "Hash", "d": "deterministic until it isn't", "g": "discovers a neighbor shares its exact hash — a collision", "q": "same hash?! one in 4 billion!!"}, {"n": "Salt", "d": "makes everything unguessable", "g": "sprinkles white salt grains over a neighbor to season them", "q": "unguessable now ♡"}, {"n": "Nonce", "d": "used exactly once", "g": "spins one full rotation, then declares itself spent forever", "q": "USED — never again"}, {"n": "Blob", "d": "big, binary, unreadable", "g": "base64-encodes itself into proud unreadable gibberish", "q": "i encoded myself. i am unreadable ♡"}, {"n": "Node", "d": "one package, 1204 dependencies", "g": "installs 1204 packages; also decrees a v2 bump on everyone", "q": "heavier than the universe."}, {"n": "Patch", "d": "heals things. by force if needed", "g": "patches a broken neighbor to v1.0.1; force-pushes the crowd away", "q": "you were broken. not anymore ♡"}, {"n": "Diff", "d": "sees only what changed", "g": "labels two piks -removed/+added; stares down a code review", "q": "2 insertions, 1 deletion"}, {"n": "Fork", "d": "history is negotiable", "g": "forcibly rebases a neighbor; demos a fork bomb with ghosts", "q": "do NOT run this one"}, {"n": "Fork++", "d": "a fork of a fork. upstream is a rumor.", "g": "forked the fork, kept the README, changed one line, immensely proud of it", "q": "this time it diverges."}, {"n": "Merge", "d": "the branch train IS its show", "g": "merged piks queue behind the Merge, joined by pink dashed branch lines — a git graph on legs", "q": "branch merged ♡"}, {"n": "Echo", "d": "everything twice, fading", "g": "one hello repeats twice more, fading softer each time", "q": "…hello"}, {"n": "Curl", "d": "fetches anything, demos everything", "g": "live demo dies with the wifi; GETs a desktop icon, 200 OK", "q": "works locally, watch this"}, {"n": "Vim", "d": "you can enter. you cannot leave", "g": "cycles :q :q! :wq trying to exit; hot-edits production live", "q": "FREE!! (i will be back)"}, {"n": "Tarball", "d": "nobody remembers the flags", "g": "sweats through tar flag guesses until extraction succeeds", "q": "i NEVER remember. nobody does."}, {"n": "Floppy", "d": "the immortal save icon", "g": "walks to a neighbor and saves them, floppy style", "q": "children ask what i am ♡"}, {"n": "Zipette", "d": "compression, but cute", "g": "squashes itself 60% smaller, then pops back lossless", "q": "POP. all still here ♡"}, {"n": "Socket", "d": "three-way handshakes only", "g": "performs a full SYN, SYN-ACK, ACK handshake with a partner", "q": "connected ♡ (three ways)"}, {"n": "Proxy", "d": "sees everything, tells no one", "g": "plants itself between two piks and silently relays traffic", "q": "i see everything. i tell no one."}, {"n": "Mutex", "d": "one at a time. ONE.", "g": "acquires the lock and makes a neighbor wait their turn", "q": "your turn. no deadlocks today"}, {"n": "Async", "d": "will finish. eventually. promise", "g": "a pending promise that finally resolves, smugly", "q": "told you i would finish ♡"}, {"n": "Loopy", "d": "while(true) is a lifestyle", "g": "walks an infinite square loop until break; miscounts by one", "q": "every. single. time."}, {"n": "Segfault", "d": "crashes with dignity", "g": "segfaults, dumps core, restarts; watches prod burn calmly", "q": "i touched memory that was not mine ♡"}], "species": [{"k": "bsodjr", "n": "BSOD JR.", "d": "falls over :( then gets right back up. files a crash report about itself each time.", "g": "spreads bluescreens: lone victims, crash progress bars, desk-wide outage", "q": "…everyone rebooted ok?"}, {"k": "glitch", "n": "ARTIFACT", "d": "a compression artifact that gained sentience. do not re-encode.", "g": "re-encodes itself blurry, gives lossy hugs, sheds corrupted macroblocks", "q": "sorry. lossy hug"}, {"k": "matrix", "n": "NEO SPROUT", "d": "sees the desktop as falling glyphs. chose the pink pill anyway.", "g": "dodges clicks in bullet time, sees code rain, chases rabbits", "q": "i can see the code"}, {"k": "pointer", "n": "POINTER", "d": "sprints, stops dead, hovers. blames your wrist.", "g": "busy hourglass wait, shake-to-find lost cursor, rubber-band selects the crowd", "q": "THERE i am!!"}, {"k": "wifi", "n": "SIGNAL", "d": "full bars everywhere. yes, even in the basement.", "g": "runs a sacred speed test, reboots itself, shares an insecure hotspot", "q": "off and on again. works every time"}, {"k": "captcha", "n": "NOT A ROBOT", "d": "passes every CAPTCHA first try. suspiciously good at crosswalks.", "g": "runs a tiny 3x3 CAPTCHA exam on a passerby", "q": "select all squares with buds"}, {"k": "y2kbug", "n": "Y2K BUG", "d": "the apocalypse that RSVP'd and never showed. still dressed for it.", "g": "counts down the apocalypse hourly; rarely doom or fireworks actually arrive", "q": "they patched MY apocalypse."}, {"k": "kernelpg", "n": "PENGUIN CORE", "d": "monolithic, open-source, will explain itself unprompted.", "g": "traps victims in dependency hell, kernel-panics, performs the sudo sandwich ritual", "q": "sudo make me a sandwich"}, {"k": "cacheghost", "n": "CACHE GHOST", "d": "404 in the heap, alive in your heart. clear-site-data can't touch it.", "g": "vanishes then returns 304, serves last week's stale self", "q": "have you tried hard refresh"}, {"k": "cronjob", "n": "CRON JOB", "d": "runs * * * * *. never missed a beat. slightly smug about it.", "g": "runs scheduled syncs and 3am backups, mourns one missed tick", "q": "missed a tick. unforgivable."}, {"k": "lowbatt", "n": "LOW BATT", "d": "permanently at 15%. refuses every charger. lives anyway.", "g": "power-saves, charges at icon outlets, calmly survives one percent", "q": "unplugged at 87%. good enough"}, {"k": "post", "n": "POST BEEP", "d": "boots in 0.2 seconds. spends the saved time napping.", "g": "beeping hardware checkups: patrols, beep-code diagnoses, live boot sequence", "q": "all systems OK"}, {"k": "cumulus", "n": "CUMULUS", "d": "your data is inside it somewhere. it will not say where.", "g": "cloud-syncs colleagues, suffers a 503 outage, summons storm surges", "q": "we apologize for the inconvenience"}, {"k": "feature", "n": "FEATURE", "d": "filed as a bug, closed as WONTFIX, beloved as a feature.", "g": "reports bugs it cannot reproduce, creeps scope, calls walking forward a regression", "q": "works on my machine"}, {"k": "latency", "n": "LATENCY", "d": "walks at 300ms ping. emotionally, always 3 seconds behind.", "g": "lag theatre: rubber-band rewinds, delayed pokes, stamped packet loss", "q": "the server disagrees"}, {"k": "aliased", "n": "ALIASED", "d": "renders at 8×8 out of principle. anti-aliasing is a scam.", "g": "preaches 8x8 gospel, quantizing itself, neighbors, and desktop icons", "q": "welcome to 8×8"}, {"k": "darkmode", "n": "DARK MODE", "d": "claims it saves battery. actually just goth.", "g": "carries portable midnight, judges your theme, dims colleagues unasked", "q": "SO bright. criminal."}, {"k": "gilded", "n": "GOLD MASTER", "d": "the release that never needed a hotfix. worship it.", "g": "stamps colleagues SHIPPED, declares itself v1.0 FINAL, goes gold", "q": "WE'VE GONE GOLD!!"}, {"k": "bitflip", "n": "BIT FLIP", "d": "one stray cosmic ray and now it can't decide if it's a 0 or a 1.", "g": "cosmic-ray antics: contagious glitches, +4096 votes, daily 0-or-1 coin", "q": "today i am a 1 ♡"}, {"k": "turbo", "n": "OVERCLOCK", "d": "runs 30% faster, 300% warmer. the fan noise is purring, probably.", "g": "overclocks into thermal throttle, heats friends, chases benchmark records", "q": "warranty: void ♡"}, {"k": "dotmatrix", "n": "DOT MATRIX", "d": "prints one pixel at a time. SCREEE. beautiful. archival quality.", "g": "screeching printer: paper trail, colleague reports, sacred ASCII banner", "q": "archival quality."}, {"k": "rgbrig", "n": "RGB RIG", "d": "+15 FPS from the lighting alone (self-reported).", "g": "cycles RGB modes, syncs the desk's lighting, claims fps gains", "q": "+15 fps. told you ♡"}]};
+
+  // ——— the 22 hidden kinds: ink dots below the wheel ———
+  const petGrid = document.getElementById('petGrid');
+  DOSSIER.species.forEach((sp, i) => {
+    const c = document.createElement('div');
+    c.className = 'budcell is-pet';
+    c.innerHTML =
+      '<div class="dot"></div>' +
+      '<img class="px" loading="lazy" src="assets/characters-full/sp-' + sp.k + '-f3.png" alt="' + sp.n + '">' +
+      '<div class="nm">' + sp.n + '</div>';
+    c.addEventListener('click', () => dosOpen('sp', i));
+    petGrid.appendChild(c);
+  });
+
+  // ——— the dossier: the site card's bones, this book's cloth ———
+  const dosOverlay = document.getElementById('dosOverlay');
+  function dosStats(h) {
+    return [['CPU', 40 + (h * 7) % 60], ['RAM', 40 + (h * 13) % 60], ['FPS', 40 + (h * 11) % 60], ['PING', 8 + (h * 3) % 88]];
+  }
+  function dosOpen(kind, i) {
+    const isW = kind === 'w';
+    const e = isW ? DOSSIER.wheel[i] : DOSSIER.species[i];
+    const base = isW ? 'w' + String(i).padStart(2, '0') : 'sp-' + e.k;
+    const forms = isW
+      ? [['-s0', '·'], ['-s1', '·'], ['-s2', '★'], ['-f2', '★★'], ['-f3', '★★★']]
+      : [['-f1', '★'], ['-f2', '★★'], ['-f3', '★★★']];
+    document.getElementById('dosName').innerHTML = e.n + '<em>.bud</em>';
+    document.getElementById('dosDuty').innerHTML = '<b>DUTY —</b> ' + e.d;
+    document.getElementById('dosStory').textContent = e.g ? e.g + '.' : '';
+    document.getElementById('dosQuote').textContent = '“' + e.q + '”';
+    const h = isW ? HUES[i] : (i * 37 + 11) % 360;
+    document.getElementById('dosStats').innerHTML = dosStats(h).map(([lb, v]) =>
+      '<span class="lb">' + lb + '</span><span class="dos-bar"><i style="width:' + v + '%"></i></span><span class="vl">' + v + '%</span>').join('');
+    const fwrap = document.getElementById('dosForms');
+    fwrap.innerHTML = '';
+    const img = document.getElementById('dosImg');
+    const stars = document.getElementById('dosStars');
+    forms.forEach(([sfx, cap], fi) => {
+      const b = document.createElement('button');
+      b.innerHTML = '<img class="px" src="assets/characters-full/' + base + sfx + '.png" alt="">';
+      b.addEventListener('click', () => {
+        img.src = 'assets/characters-full/' + base + sfx + '.png';
+        stars.textContent = cap === '·' ? 'SPROUT' : cap;
+        fwrap.querySelectorAll('button').forEach((x) => x.classList.remove('on'));
+        b.classList.add('on');
+      });
+      if (fi === forms.length - 1) { b.classList.add('on'); img.src = 'assets/characters-full/' + base + sfx + '.png'; stars.textContent = cap; }
+      fwrap.appendChild(b);
+    });
+    dosOverlay.classList.add('open');
+  }
+  document.getElementById('dosClose').addEventListener('click', () => dosOverlay.classList.remove('open'));
+  dosOverlay.addEventListener('click', (ev) => { if (ev.target === dosOverlay) dosOverlay.classList.remove('open'); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') dosOverlay.classList.remove('open'); });
+
   const cellObs = new IntersectionObserver((es) => {
     es.forEach((e) => {
       if (e.isIntersecting) {
