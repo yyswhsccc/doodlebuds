@@ -679,7 +679,7 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
     const forms = isW
       ? [['-s0', '·'], ['-s1', '·'], ['-s2', '★'], ['-f2', '★★'], ['-f3', '★★★']]
       : [['-f1', '★'], ['-f2', '★★'], ['-f3', '★★★']];
-    document.getElementById('dosName').innerHTML = e.n + '<em>.bud</em>';
+    document.getElementById('dosName').innerHTML = e.n.replace(/\.$/, '') + '<em>.bud</em>'; // BSOD JR. must not double its period
     document.getElementById('dosDuty').innerHTML = '<b>DUTY —</b> ' + e.d;
     document.getElementById('dosStory').textContent = e.g ? e.g + '.' : '';
     document.getElementById('dosQuote').textContent = '“' + e.q + '”';
