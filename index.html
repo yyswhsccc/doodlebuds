@@ -112,8 +112,26 @@
   .dos-walk { position: absolute; width: 108px; transition: left 2.1s linear, top 2.1s linear; will-change: left, top; }
   .dos-walk img { width: 100%; image-rendering: pixelated; animation: waddle 0.62s ease-in-out infinite; }
   .dos-walk.flip img { transform: scaleX(-1); }
-  .dos-trail { position: absolute; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; opacity: 0.85; animation: dos-trail 2.6s ease forwards; pointer-events: none; white-space: nowrap; }
-  @keyframes dos-trail { 0% { opacity: 0; transform: translateY(-3px); } 15% { opacity: 0.85; transform: translateY(0); } 70% { opacity: 0.6; } 100% { opacity: 0; } }
+  .dtx { position: absolute; width: 7px; height: 7px; pointer-events: none; z-index: 3; }
+  .dtx-bloom { width: 26px; height: 26px; image-rendering: pixelated; animation: dtxbloom 2.4s ease forwards; }
+  @keyframes dtxbloom { 0% { transform: scale(0); } 18% { transform: scale(1.2); } 30% { transform: scale(1); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+  .dtx-burst { animation: dtxburst 0.95s ease-out forwards; }
+  @keyframes dtxburst { 0% { transform: translate(0, 0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(0.9); opacity: 0; } }
+  .dtx-ring { width: 10px; height: 10px; border: 2.5px solid var(--c1); background: transparent !important; border-radius: 0; animation: dtxring 1.05s ease-out forwards; }
+  @keyframes dtxring { 0% { transform: scale(0.3); opacity: 1; } 100% { transform: scale(3.2); opacity: 0; } }
+  .dtx-rise { animation: dtxrise 1.5s ease-out forwards; }
+  @keyframes dtxrise { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-30px); opacity: 0; } }
+  .dtx-fall { animation: dtxfall 1.5s ease-in forwards; }
+  @keyframes dtxfall { 0% { transform: translateY(-6px); opacity: 1; } 100% { transform: translateY(26px); opacity: 0; } }
+  .dtx-tw { background: transparent !important; animation: dtxtw 1.6s steps(2) forwards; }
+  .dtx-tw::before { content: ''; position: absolute; inset: 0; background: var(--c1); box-shadow: 0 -7px var(--c1), 0 7px var(--c1), -7px 0 var(--c1), 7px 0 var(--c1); }
+  @keyframes dtxtw { 0% { opacity: 1; } 50% { opacity: 0.35; } 75% { opacity: 0.9; } 100% { opacity: 0; } }
+  .dtx-pane { width: 17px; height: 12px; animation: dtxpane 1.3s steps(3) forwards; }
+  @keyframes dtxpane { 0% { opacity: 1; } 55% { opacity: 0.5; } 80% { opacity: 0.85; } 100% { opacity: 0; } }
+  .dtx-flip { width: 11px; height: 11px; animation: dtxflip 1.2s steps(1) forwards; }
+  @keyframes dtxflip { 0% { background: var(--c1); opacity: 1; } 25% { background: var(--c2); } 50% { background: var(--c1); } 75% { background: var(--c2); } 100% { background: var(--c1); opacity: 0; } }
+  .dtx-ghost { width: 58px; height: auto; image-rendering: pixelated; animation: dtxghost 1.3s ease forwards; }
+  @keyframes dtxghost { 0% { opacity: 0.45; } 100% { opacity: 0; } }
   .dos-bub { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-35%); z-index: 6; background: #fff; border: 2.5px solid var(--ink); border-radius: 9px; padding: 4px 9px; font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; white-space: nowrap; box-shadow: 2px 2px 0 rgba(17, 17, 17, 0.2); animation: dos-bub 2.4s ease forwards; pointer-events: none; }
   @keyframes dos-bub { 0% { opacity: 0; } 12% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
   .dos-fx { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
@@ -676,23 +694,30 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
   });
 
   // ——— every resident walks its card: identity trails + lines + fx ———
-  const TRAILS = {
-    Pixel: ['▪', 'RGB', '·'], Cursor: ['|', '_', '|'], Sprite: ['▞', 'fr.2', '▚'], Voxel: ['◧', '3D!!'], Glyph: ['?', '□', 'U+FFFD'],
-    Chip: ['⌗', '3nm'], Bit: ['0', '1'], Nibble: ['0xF', '½'], Byte: ['255', '0x00'], Cache: ['HIT', 'MISS'],
-    Cookie: ['yes', 'yes'], 'Cookie++': ['yes²', 'again'], Token: ['●●●', 'exp?'], Packet: ['▣', 'ACK'], Ping: ['ping', 'pong'],
-    Modem: ['56k', 'EEE-AW'], Router: ['⌇', '2.4GHz'], Widget: ['[ok]', '[x]'], Kernel: ['sudo', 'ring0'], Daemon: ['&', 'bg'],
-    Cron: ['*', '* * * * *'], Bash: ['$', 'rm?'], Grep: ['/re/', '-r'], Regex: ['^', '.*', '$'], Lambda: ['λ', 'x=>x'],
-    Stack: ['push', 'pop'], Heap: ['alloc', 'free?'], Queue: ['FIFO', '№47'], Hash: ['#', 'a1f9'], Salt: ['NaCl', '✧'],
-    Nonce: ['once', 'spent'], Blob: ['⬤', '4GB'], Node: ['npm i', '⬢'], Patch: ['+', '-'], Diff: ['+++', '---'],
-    Fork: ['⑂', 'HEAD'], 'Fork++': ['⑂⑂', 'v2'], Merge: ['⑃', 'ours'], Echo: ['echo', 'echo…'], Curl: ['-X GET', '200'],
-    Vim: [':q', ':q!', ':wq', 'ESC'], Tarball: ['.tar.gz', '-xvf'], Floppy: ['1.44MB', 'A:\\'], Zipette: ['.zip', 'deflate'], Socket: ['SYN', 'ACK'],
-    Proxy: ['127.0.0.1', 'via'], Mutex: ['lock', 'wait…'], Async: ['await', 'then'], Loopy: ['while(1)', 'i++'], Segfault: ['SIGSEGV', '0xdead'],
-    bsodjr: [':(', '0x0000DEAD'], glitch: ['▚', '▞', '§'], matrix: ['ﾊ', 'ﾐ', '0', '1'], pointer: ['➤', '…'], wifi: ['◜◝', '📶'],
-    captcha: ['☑', '3×3'], y2kbug: ['19100', '🎊'], kernelpg: ['GNU/', 'btw'], cacheghost: ['304', 'v=?'], cronjob: ['🔔', '*/1'],
-    lowbatt: ['15%', 'zzz'], post: ['♪', 'beep'], cumulus: ['☁', '✓synced'], feature: ['WONTFIX', 'by design'], latency: ['300ms', '⏪'],
-    aliased: ['▛', '8×8'], darkmode: ['☾', '0 lux'], gilded: ['✓', 'GOLD'], bitflip: ['0', '1', '0↔1'], turbo: ['98°C', '▲'],
-    dotmatrix: ['SCREE', '▤'], rgbrig: ['RGB', '+15fps'],
+  // ——— footprints are EFFECTS now (owner decree: no words, more fun) ———
+  // gen: burst/ring/rise/fall/tw/pane/flip/ghost/bloom · c: palette
+  const FX = {
+    Pixel: ['burst', ['#e60012', '#2ea043', '#0a4bd6']], Cursor: ['flip', ['#111111', '#ffffff']], Sprite: ['ghost'], Voxel: ['burst', ['#c9a7f5', '#8a4bd0']],
+    Glyph: ['flip', ['#111111', '#e60012']], Chip: ['tw', ['#ffd400']], Bit: ['flip', ['#111111', '#ffffff']], Nibble: ['burst', ['#ff8fc7', '#ffd400', '#41e0ff', '#7cfc00']],
+    Byte: ['burst', ['#ffb347', '#ff8a5c']], Cache: ['ghost'], Cookie: ['fall', ['#c98a2e', '#8a5a2e']], 'Cookie++': ['fall', ['#c98a2e', '#e60012']],
+    Token: ['tw', ['#ffd400']], Packet: ['burst', ['#41e0ff', '#0a90c0']], Ping: ['ring', ['#7cfc00']], Modem: ['ring', ['#c98a2e']],
+    Router: ['ring', ['#41e0ff']], Widget: ['pane', ['#b8b4ac']], Kernel: ['burst', ['#ffd400', '#111111']], Daemon: ['ghost'],
+    Cron: ['ring', ['#ffd400']], Bash: ['burst', ['#2ea043', '#7ee787']], Grep: ['tw', ['#ffd400']], Regex: ['burst', ['#ff2fae', '#c9a7f5']],
+    Lambda: ['rise', ['#ffd400']], Stack: ['rise', ['#8a4bd0', '#c9a7f5']], Heap: ['burst', ['#ff8fc7', '#ffd400', '#41e0ff']], Queue: ['fall', ['#41e0ff', '#0a90c0']],
+    Hash: ['flip', ['#111111', '#7ee787']], Salt: ['fall', ['#ffffff', '#e8e8f0']], Nonce: ['tw', ['#f0f0f5']], Blob: ['rise', ['#9fe8c0', '#41e0ff']],
+    Node: ['rise', ['#2ea043']], Patch: ['burst', ['#2ea043', '#e60012']], Diff: ['flip', ['#2ea043', '#e60012']], Fork: ['burst', ['#ff8fc7', '#ff2fae']],
+    'Fork++': ['burst', ['#ff2fae', '#8a4bd0']], Merge: ['ring', ['#8a4bd0']], Echo: ['ghost'], Curl: ['ring', ['#41e0ff']],
+    Vim: ['pane', ['#2ea043']], Tarball: ['fall', ['#c98a2e']], Floppy: ['pane', ['#5a6acf']], Zipette: ['burst', ['#ffd400', '#c98a2e']],
+    Socket: ['ring', ['#41e0ff']], Proxy: ['ghost'], Mutex: ['pane', ['#ffd400']], Async: ['ghost'], Loopy: ['ring', ['#ff8fc7']], Segfault: ['burst', ['#e60012', '#111111']],
+    bsodjr: ['pane', ['#0a4bd6']], glitch: ['flip', ['#ff2fae', '#41e0ff']], matrix: ['fall', ['#2ea043', '#7ee787']], pointer: ['ghost'],
+    wifi: ['ring', ['#41e0ff']], captcha: ['pane', ['#7cfc00']], y2kbug: ['burst', ['#ff2fae', '#41e0ff', '#ffd400', '#7cfc00']], kernelpg: ['fall', ['#111111', '#ffd400']],
+    cacheghost: ['ghost'], cronjob: ['ring', ['#ffd400']], lowbatt: ['pane', ['#e60012']], post: ['ring', ['#7ee787']],
+    cumulus: ['fall', ['#41e0ff', '#9fe8c0']], feature: ['burst', ['#adff2f', '#ffd400']], latency: ['ghost'], aliased: ['flip', ['#8a4bd0', '#c9a7f5']],
+    darkmode: ['tw', ['#c9a7f5']], gilded: ['tw', ['#ffd400']], bitflip: ['flip', ['#111111', '#ffffff']], turbo: ['rise', ['#ff4d1f', '#ff8a5c', '#ffd400']],
+    dotmatrix: ['fall', ['#b8b4ac', '#8a8a96']], rgbrig: ['burst', ['#e60012', '#2ea043', '#0a4bd6', '#ffd400']],
   };
+  const BLOOMS = ['bloom-0', 'bloom-1', 'bloom-2', 'bloom-3', 'bloom-4', 'bloom-5'];
+  let stageEvolved = true; // which form tab is lit — base forms leave FLOWERS
   const EXTRA_SAY = {
     bsodjr: ['…did i do that?', 'rebooting ♡'], glitch: ['do not re-encode', 'generation 13'], matrix: ['follow the green rain', 'i can SEE it'],
     pointer: ['your wrist. blame it.', '…hover.'], wifi: ['three bars ANYWHERE', 'off and on again'], captcha: ['select all buds', 'verified ✓'],
@@ -711,7 +736,6 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
     const walk = document.getElementById('dosWalk');
     const fx = document.getElementById('dosFx');
     fx.innerHTML = '';
-    const trail = TRAILS[key] || TRAILS[name] || ['·'];
     const say = [];
     const e = curEntry;
     if (e.q) say.push(e.q);
@@ -738,16 +762,50 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
     walk.style.left = x + 'px'; walk.style.top = y + 'px';
     move();
     stageTimers.push(setInterval(move, 2300));
-    stageTimers.push(setInterval(() => { // footprints of its own kind
-      const t = document.createElement('span');
-      t.className = 'dos-trail';
-      t.textContent = trail[Math.floor(Math.random() * trail.length)];
-      t.style.left = (x + 34 + Math.random() * 30) + 'px';
-      t.style.top = (y + 108 + Math.random() * 14) + 'px';
-      t.style.color = ['#111', '#e60012', '#8a4bd0', '#2ea043'][Math.floor(Math.random() * 4)];
-      port.insertBefore(t, walk);
-      setTimeout(() => { try { t.remove(); } catch (er) {} }, 2700);
-    }, 640));
+    const fxSpec = FX[key] || FX[name] || ['burst', ['#e60012', '#111111']];
+    const drop = (cls, css, life) => {
+      const el = document.createElement('i');
+      el.className = 'dtx ' + cls;
+      el.style.cssText = css;
+      port.insertBefore(el, walk);
+      setTimeout(() => { try { el.remove(); } catch (er) {} }, life || 2700);
+      return el;
+    };
+    stageTimers.push(setInterval(() => { // footprints of its own kind — effects, not words
+      const fx0 = x + 40 + Math.random() * 24, fy0 = y + 106 + Math.random() * 14;
+      if (!stageEvolved) { // pre-evolution: the classic pixel flowers
+        const b = document.createElement('img');
+        b.className = 'dtx dtx-bloom px';
+        b.src = 'assets/tracks/' + BLOOMS[Math.floor(Math.random() * BLOOMS.length)] + '.png';
+        b.style.left = fx0 + 'px'; b.style.top = fy0 + 'px';
+        port.insertBefore(b, walk);
+        setTimeout(() => { try { b.remove(); } catch (er) {} }, 2500);
+        return;
+      }
+      const [gen, cols] = fxSpec;
+      const c1 = cols ? cols[Math.floor(Math.random() * cols.length)] : '#e60012';
+      const c2 = cols && cols.length > 1 ? cols[(cols.indexOf(c1) + 1) % cols.length] : '#ffffff';
+      if (gen === 'burst') {
+        for (let k2 = 0; k2 < 4; k2++) {
+          const a = k2 / 4 * 6.283 + Math.random();
+          drop('dtx-burst', 'left:' + fx0 + 'px; top:' + fy0 + 'px; background:' + (cols[k2 % cols.length]) + '; --dx:' + Math.round(Math.cos(a) * 17) + 'px; --dy:' + Math.round(Math.sin(a) * 14) + 'px;', 1100);
+        }
+      } else if (gen === 'ring') drop('dtx-ring', 'left:' + fx0 + 'px; top:' + fy0 + 'px; --c1:' + c1 + ';', 1200);
+      else if (gen === 'rise') { for (let k2 = 0; k2 < 2; k2++) drop('dtx-rise', 'left:' + (fx0 + k2 * 9 - 4) + 'px; top:' + (fy0 - k2 * 5) + 'px; background:' + (cols[k2 % cols.length]) + '; animation-delay:' + (k2 * 0.16) + 's;', 1900); }
+      else if (gen === 'fall') { for (let k2 = 0; k2 < 2; k2++) drop('dtx-fall', 'left:' + (fx0 + k2 * 10 - 5) + 'px; top:' + (fy0 - 8) + 'px; background:' + (cols[k2 % cols.length]) + '; animation-delay:' + (k2 * 0.18) + 's;', 1900); }
+      else if (gen === 'tw') drop('dtx-tw', 'left:' + fx0 + 'px; top:' + (fy0 - 4) + 'px; --c1:' + c1 + ';', 1700);
+      else if (gen === 'pane') drop('dtx-pane', 'left:' + (fx0 - 4) + 'px; top:' + (fy0 - 2) + 'px; background:' + c1 + '; border:2px solid rgba(17,17,17,0.65);', 1400);
+      else if (gen === 'flip') drop('dtx-flip', 'left:' + fx0 + 'px; top:' + (fy0 - 2) + 'px; --c1:' + c1 + '; --c2:' + c2 + ';', 1300);
+      else if (gen === 'ghost') {
+        const g = document.createElement('img');
+        g.className = 'dtx dtx-ghost px';
+        g.src = document.getElementById('dosImg').src;
+        g.style.left = x + 'px'; g.style.top = (y + 40) + 'px';
+        if (walk.classList.contains('flip')) g.style.transform = 'scaleX(-1)';
+        port.insertBefore(g, walk);
+        setTimeout(() => { try { g.remove(); } catch (er) {} }, 1400);
+      }
+    }, 700));
     stageTimers.push(setInterval(() => { // it has opinions
       const b = document.createElement('div');
       b.className = 'dos-bub';
@@ -806,11 +864,12 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
       b.innerHTML = '<img class="px" src="assets/characters-full/' + base + sfx + '.png" alt="">';
       b.addEventListener('click', () => {
         img.src = 'assets/characters-full/' + base + sfx + '.png';
+        stageEvolved = sfx === '-f2' || sfx === '-f3'; // base forms bloom, evolved forms EFFECT
         stars.textContent = cap === '·' ? 'SPROUT' : cap;
         fwrap.querySelectorAll('button').forEach((x) => x.classList.remove('on'));
         b.classList.add('on');
       });
-      if (fi === forms.length - 1) { b.classList.add('on'); img.src = 'assets/characters-full/' + base + sfx + '.png'; stars.textContent = cap; }
+      if (fi === forms.length - 1) { b.classList.add('on'); img.src = 'assets/characters-full/' + base + sfx + '.png'; stars.textContent = cap; stageEvolved = true; }
       fwrap.appendChild(b);
     });
     dosOverlay.classList.add('open');
