@@ -112,6 +112,16 @@
   .dos-walk { position: absolute; width: 108px; transition: left 2.1s linear, top 2.1s linear; will-change: left, top; }
   .dos-walk img { width: 100%; image-rendering: pixelated; animation: waddle 0.62s ease-in-out infinite; }
   .dos-walk.flip img { transform: scaleX(-1); }
+  .dos-badge { position: absolute; left: 72%; bottom: calc(100% + 4px); z-index: 7; background: var(--ink); color: #ffd400; font-family: 'Courier New', monospace; font-size: 10.5px; font-weight: 700; padding: 3px 7px; border: 2px solid #ffd400; white-space: nowrap; animation: dos-bub 2.1s ease forwards; pointer-events: none; }
+  .dos-badge.red { color: #ff5f57; border-color: #ff5f57; }
+  .dos-badge.grn { color: #7ee787; border-color: #7ee787; }
+  .dos-badge.gold { background: #ffd400; color: #2a0a20; border-color: #2a0a20; }
+  .dos-disgbn { position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%); z-index: 7; background: #fff; border: 2px solid var(--ink); font-family: 'Courier New', monospace; font-size: 10px; font-weight: 700; padding: 2px 6px; white-space: nowrap; pointer-events: none; }
+  .dos-panel { position: absolute; z-index: 7; background: #16141c; border: 2px solid #7ee787; color: #7ee787; font-family: 'Courier New', monospace; font-size: 9.5px; font-weight: 700; padding: 4px 8px; line-height: 1.7; white-space: nowrap; animation: dos-bub 2.6s ease forwards; pointer-events: none; }
+  .dos-paper { position: absolute; z-index: 2; width: 46px; height: 26px; background: #fff; border: 2px solid #cfc3b8; animation: dtxghost 2.2s ease forwards; pointer-events: none; }
+  .dos-paper::before, .dos-paper::after { content: ''; position: absolute; top: 3px; width: 5px; height: 5px; background: #e8e0d4; box-shadow: 0 8px #e8e0d4; }
+  .dos-paper::before { left: 3px; } .dos-paper::after { right: 3px; }
+  .dos-folder { position: absolute; z-index: 6; font-size: 30px; transition: left 2.1s linear, top 2.1s linear; pointer-events: none; }
   .dtx { position: absolute; width: 7px; height: 7px; pointer-events: none; z-index: 3; }
   .dtx-bloom { width: 26px; height: 26px; image-rendering: pixelated; animation: dtxbloom 2.4s ease forwards; }
   @keyframes dtxbloom { 0% { transform: scale(0); } 18% { transform: scale(1.2); } 30% { transform: scale(1); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
@@ -823,25 +833,145 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
       walk.appendChild(b);
       setTimeout(() => { try { b.remove(); } catch (er) {} }, 2500);
     }, 4600));
-    stageTimers.push(setInterval(() => { // identity fx, on its own clock
-      if (key === 'bsodjr' && Math.random() < 0.5) {
-        const f = document.createElement('div'); f.className = 'fxflash'; f.textContent = ':('; fx.appendChild(f);
-        setTimeout(() => { try { f.remove(); } catch (er) {} }, 1150);
-      } else if ((key === 'matrix' || name === 'Segfault') && Math.random() < 0.75) {
-        for (let k2 = 0; k2 < 7; k2++) { const d = document.createElement('span'); d.className = 'fxdrop'; d.textContent = 'ﾊﾐ01'[k2 % 4]; d.style.left = (10 + Math.random() * 92) + '%'; d.style.animationDelay = (Math.random() * 0.5) + 's'; fx.appendChild(d); setTimeout(() => { try { d.remove(); } catch (er) {} }, 2500); }
-      } else if ((key === 'y2kbug' || key === 'rgbrig' || name === 'Merge') && Math.random() < 0.7) {
-        for (let k2 = 0; k2 < 8; k2++) { const c = document.createElement('i'); c.className = 'fxconf'; c.style.background = ['#ff2fae', '#41e0ff', '#ffd400', '#7cfc00'][k2 % 4]; c.style.left = (8 + Math.random() * 88) + '%'; c.style.top = '-10px'; c.style.animationDelay = (Math.random() * 0.6) + 's'; fx.appendChild(c); setTimeout(() => { try { c.remove(); } catch (er) {} }, 3000); }
-      } else if (key === 'glitch' || key === 'bitflip' || name === 'Glyph') {
-        const img = document.getElementById('dosImg');
-        img.style.filter = 'hue-rotate(' + (Math.random() * 300) + 'deg) saturate(2)';
-        setTimeout(() => { try { img.style.filter = ''; } catch (er) {} }, 420);
-      } else if (key === 'latency' || name === 'Async') {
-        walk.style.transitionDuration = '4.5s';
-        setTimeout(() => { try { walk.style.transitionDuration = ''; } catch (er) {} }, 4400);
-      } else if (key === 'turbo' || name === 'Loopy') {
-        walk.style.transitionDuration = '0.7s';
-        setTimeout(() => { try { walk.style.transitionDuration = ''; } catch (er) {} }, 2200);
+    // ——— the SIGNATURE ACTS: every hidden kind performs its own show,
+    // ported from home (transform costumes, folder heists, dropouts…) ———
+    const DISGS = ['cat', 'bunny', 'duck', 'frog', 'pig', 'unicorn', 'dragon', 'ghost', 'octopus', 'bee', 'fox', 'whale'];
+    const sBadge = (txt, cls) => {
+      const el = document.createElement('span');
+      el.className = 'dos-badge' + (cls ? ' ' + cls : '');
+      el.textContent = txt;
+      walk.appendChild(el);
+      setTimeout(() => { try { el.remove(); } catch (er) {} }, 2100);
+    };
+    const imgFx = (css, ms) => {
+      const img2 = document.getElementById('dosImg');
+      img2.style.filter = css;
+      setTimeout(() => { try { img2.style.filter = ''; } catch (er) {} }, ms);
+    };
+    const fall = (ms) => {
+      const img2 = document.getElementById('dosImg');
+      img2.style.transform = 'rotate(94deg) translateY(6px)';
+      setTimeout(() => { try { img2.style.transform = ''; } catch (er) {} }, ms);
+    };
+    const rainDrops = (chars, color, n2) => {
+      for (let k2 = 0; k2 < n2; k2++) {
+        const dEl = document.createElement('span');
+        dEl.className = 'fxdrop';
+        dEl.textContent = chars[k2 % chars.length];
+        dEl.style.left = (10 + Math.random() * 88) + '%';
+        dEl.style.color = color;
+        dEl.style.animationDelay = (Math.random() * 0.5) + 's';
+        fx.appendChild(dEl);
+        setTimeout(() => { try { dEl.remove(); } catch (er) {} }, 2500);
       }
+    };
+    const confettiBurst = () => {
+      for (let k2 = 0; k2 < 8; k2++) {
+        const cEl = document.createElement('i');
+        cEl.className = 'fxconf';
+        cEl.style.background = ['#ff2fae', '#41e0ff', '#ffd400', '#7cfc00'][k2 % 4];
+        cEl.style.left = (8 + Math.random() * 88) + '%';
+        cEl.style.top = '-10px';
+        cEl.style.animationDelay = (Math.random() * 0.6) + 's';
+        fx.appendChild(cEl);
+        setTimeout(() => { try { cEl.remove(); } catch (er) {} }, 3000);
+      }
+    };
+    const FX2 = {
+      bsodjr() { // falls over :( — then gets right back up
+        if (Math.random() < 0.5) {
+          const f = document.createElement('div'); f.className = 'fxflash'; f.textContent = ':('; fx.appendChild(f);
+          setTimeout(() => { try { f.remove(); } catch (er) {} }, 1150);
+        } else { fall(1300); sBadge(':(', 'red'); }
+      },
+      glitch() { imgFx('blur(2px) saturate(2.4) contrast(1.5) hue-rotate(40deg)', 900); setTimeout(() => sBadge('REMASTER ✨', 'grn'), 1000); },
+      matrix() { rainDrops('ﾊﾐ01', '#2ea043', 7); },
+      pointer() { // it DRAGS a folder out of nowhere. it is not its folder
+        const f = document.createElement('span');
+        f.className = 'dos-folder';
+        f.textContent = '📁';
+        f.style.left = (x + 76) + 'px'; f.style.top = (y + 60) + 'px';
+        port.appendChild(f);
+        let hops = 0;
+        const tow = setInterval(() => {
+          hops++;
+          f.style.left = (x + 70) + 'px'; f.style.top = (y + 58) + 'px';
+          if (hops >= 3) { clearInterval(tow); try { f.style.top = '240px'; setTimeout(() => f.remove(), 2200); } catch (er) {} }
+        }, 2100);
+        stageTimers.push(tow);
+        sBadge('...borrowing');
+      },
+      wifi() { // the dropout, then triumph
+        const seq = ['◜', '◝', '◞', '◟', '◜', '◝'];
+        seq.forEach((g, k2) => setTimeout(() => sBadge(g), k2 * 220));
+        setTimeout(() => sBadge('✕ timed out', 'red'), 1500);
+        setTimeout(() => sBadge('back online ✓', 'grn'), 3100);
+      },
+      captcha() { // it becomes another animal. briefly. verifiably.
+        const img2 = document.getElementById('dosImg');
+        const truth = img2.src;
+        const pick = DISGS[Math.floor(Math.random() * DISGS.length)];
+        img2.src = 'assets/disguises/disg-' + pick + '.png';
+        const bn = document.createElement('span');
+        bn.className = 'dos-disgbn';
+        bn.textContent = 'this is a ' + (pick === 'unicorn' ? 'UNICORN' : pick) + ' ✓';
+        walk.appendChild(bn);
+        setTimeout(() => { try { img2.src = truth; bn.remove(); } catch (er) {} }, 3000);
+      },
+      y2kbug() { ['3', '2', '1', '0'].forEach((n2, k2) => setTimeout(() => sBadge(n2, 'red'), k2 * 550));
+        setTimeout(() => { confettiBurst(); sBadge('...nothing!!'); }, 2500); },
+      kernelpg() { // dependency purgatory, portable edition
+        const pn = document.createElement('div');
+        pn.className = 'dos-panel';
+        pn.innerHTML = 'installing left-pad@1.3.0…<br>installing is-odd@3.0.1…<br>installing 847 more…';
+        pn.style.left = Math.max(4, x - 30) + 'px'; pn.style.top = Math.max(2, y - 66) + 'px';
+        port.appendChild(pn);
+        setTimeout(() => { try { pn.remove(); } catch (er) {} }, 2700);
+      },
+      cacheghost() { walk.style.opacity = '0.3'; sBadge('304 Not Modified');
+        setTimeout(() => { try { walk.style.opacity = ''; } catch (er) {} }, 1400); },
+      cronjob() { sBadge('* * * * *'); setTimeout(() => sBadge('on time ✓', 'grn'), 1400); },
+      lowbatt() { walk.style.opacity = '0.5'; imgFx('grayscale(0.8)', 2600); sBadge('15% zzz');
+        setTimeout(() => { try { walk.style.opacity = ''; sBadge('still 15%.'); } catch (er) {} }, 2600); },
+      post() { ['♪', '♪♪', '♪♪♪'].forEach((g, k2) => setTimeout(() => sBadge(g, 'grn'), k2 * 450));
+        setTimeout(() => sBadge('all systems OK ✓', 'grn'), 1700); },
+      cumulus() { rainDrops('· ·', '#41e0ff', 6); sBadge('✓ synced', 'grn'); },
+      feature() { let flips = 0;
+        const tf = setInterval(() => { walk.classList.toggle('flip'); if (++flips >= 6) clearInterval(tf); }, 260);
+        stageTimers.push(tf); sBadge('WONTFIX'); },
+      latency() { // rubber-banding: the server disagrees with your position
+        const px2 = walk.style.left, py2 = walk.style.top;
+        setTimeout(() => {
+          try { walk.style.transitionDuration = '0.25s'; walk.style.left = px2; walk.style.top = py2; sBadge('⏪ rubber-band', 'red');
+            setTimeout(() => { try { walk.style.transitionDuration = ''; } catch (er) {} }, 350); } catch (er) {}
+        }, 2300);
+      },
+      aliased() { imgFx('contrast(2.4) saturate(0.5)', 1800); sBadge('the TRUE resolution'); },
+      darkmode() { sBadge('0 lux'); },
+      gilded() { sBadge('✓ SHIPPED', 'gold');
+        for (let k2 = 0; k2 < 4; k2++) { const t2 = document.createElement('i'); t2.className = 'dtx dtx-tw'; t2.style.setProperty('--c1', '#ffd400'); t2.style.left = (x + 10 + Math.random() * 90) + 'px'; t2.style.top = (y + 10 + Math.random() * 90) + 'px'; port.insertBefore(t2, walk); setTimeout(() => { try { t2.remove(); } catch (er) {} }, 1700); } },
+      bitflip() { imgFx('invert(1)', 800); if (Math.random() < 0.3) sBadge('+4096 votes', 'gold'); },
+      turbo() { walk.style.transitionDuration = '0.7s'; imgFx('sepia(0.4) saturate(2) hue-rotate(-20deg)', 2200); sBadge('98°C ▲', 'red');
+        setTimeout(() => { try { walk.style.transitionDuration = '4s'; sBadge('throttling…'); } catch (er) {} }, 2300);
+        setTimeout(() => { try { walk.style.transitionDuration = ''; sBadge('61°C ✓', 'grn'); } catch (er) {} }, 4600); },
+      dotmatrix() { const pp = document.createElement('div'); pp.className = 'dos-paper';
+        pp.style.left = (x + 20) + 'px'; pp.style.top = (y + 110) + 'px';
+        port.insertBefore(pp, walk); sBadge('SCREEE');
+        setTimeout(() => { try { pp.remove(); } catch (er) {} }, 2300); },
+      rgbrig() { let hue = 0;
+        const th = setInterval(() => { hue += 60; document.getElementById('dosImg').style.filter = 'hue-rotate(' + hue + 'deg)'; if (hue >= 360) { clearInterval(th); document.getElementById('dosImg').style.filter = ''; } }, 300);
+        stageTimers.push(th); sBadge('+15 fps', 'grn'); },
+    };
+    stageTimers.push(setInterval(() => { // the signature act, on its own clock
+      const act = FX2[key];
+      if (act) { act(); return; }
+      // wheel guests keep their little quirks
+      if (name === 'Segfault') rainDrops('01ﾊ', '#ff5f57', 6);
+      else if (name === 'Merge' || name === 'Zipette') confettiBurst();
+      else if (name === 'Glyph') imgFx('hue-rotate(' + (Math.random() * 300) + 'deg) saturate(2)', 420);
+      else if (name === 'Async' || name === 'Loopy') { walk.style.transitionDuration = name === 'Async' ? '4.5s' : '0.7s'; setTimeout(() => { try { walk.style.transitionDuration = ''; } catch (er) {} }, 3600); }
+      else if (name === 'Vim') sBadge(':q!', 'grn');
+      else if (name === 'Gilded') sBadge('✓', 'gold');
     }, 5200));
   }
   let curEntry = null;
