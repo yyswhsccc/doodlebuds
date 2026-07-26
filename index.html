@@ -32,9 +32,9 @@
   .mono { font-family: 'Courier New', Courier, monospace; }
 
   /* ——— kusama dot fields ——— */
-  .dots-red { background: var(--red); background-image: radial-gradient(var(--paper) 9px, transparent 10px); background-size: 64px 64px; }
-  .dots-ink { background: var(--ink); background-image: radial-gradient(var(--paper) 6px, transparent 7px); background-size: 46px 46px; }
-  .dots-paper { background-image: radial-gradient(var(--ink) 5px, transparent 6px); background-size: 42px 42px; }
+  .dots-red { background-color: var(--red); background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><g fill='%23ffffff'><rect x='6' y='4' width='4' height='8'/><rect x='5' y='5' width='6' height='6'/><rect x='4' y='6' width='8' height='4'/></g></svg>"); background-size: 64px 64px; }
+  .dots-ink { background-color: var(--ink); background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><g fill='%23ffffff'><rect x='6' y='4' width='4' height='8'/><rect x='5' y='5' width='6' height='6'/><rect x='4' y='6' width='8' height='4'/></g></svg>"); background-size: 46px 46px; }
+  .dots-paper { background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><g fill='%23111111'><rect x='6' y='4' width='4' height='8'/><rect x='5' y='5' width='6' height='6'/><rect x='4' y='6' width='8' height='4'/></g></svg>"); background-size: 42px 42px; }
 
   /* ——— HERO ——— */
   .hero { min-height: 100svh; position: relative; display: flex; flex-direction: column; justify-content: center; padding: 6vw 7vw 20vh; overflow: hidden; }
@@ -48,7 +48,7 @@
   .hero-word .w2 em { font-style: normal; color: var(--red); -webkit-text-stroke: 0; }
   .hero-tag { margin-top: 4vh; margin-left: 2px; font-size: clamp(15px, 1.7vw, 22px); font-weight: 700; }
   .hero-tag .mono { display: block; margin-top: 8px; font-weight: 400; font-size: 0.82em; color: #555; }
-  .hero-dot { position: absolute; border-radius: 50%; background-color: var(--red); z-index: -1; }
+  .hero-dot { position: absolute; clip-path: polygon(25% 0%, 75% 0%, 75% 12.5%, 87.5% 12.5%, 87.5% 25%, 100% 25%, 100% 75%, 87.5% 75%, 87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%, 12.5% 87.5%, 12.5% 75%, 0% 75%, 0% 25%, 12.5% 25%, 12.5% 12.5%, 25% 12.5%); background-color: var(--red); z-index: -1; }
   .hero-dot.d1 { width: 44vw; height: 44vw; right: -14vw; top: -16vw; }
   .hero-dot.d2 { width: 9vw; height: 9vw; right: 30vw; top: 30vh; background: var(--ink); }
   .hero-dot.d3 { width: 4vw; height: 4vw; right: 26vw; top: 16vh; }
@@ -59,7 +59,7 @@
   @keyframes cross { from { left: -120px; } to { left: 104vw; } }
   @keyframes waddle { 0%, 100% { transform: translateY(0) rotate(-2.5deg); } 50% { transform: translateY(-7px) rotate(2.5deg); } }
   .parade .steps { position: absolute; bottom: 8px; left: 0; right: 0; height: 8px; }
-  .parade .steps i { position: absolute; bottom: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--red); opacity: 0; animation: stepdot 9s linear infinite; }
+  .parade .steps i { position: absolute; bottom: 0; width: 8px; height: 8px; clip-path: polygon(25% 0%, 75% 0%, 75% 12.5%, 87.5% 12.5%, 87.5% 25%, 100% 25%, 100% 75%, 87.5% 75%, 87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%, 12.5% 87.5%, 12.5% 75%, 0% 75%, 0% 25%, 12.5% 25%, 12.5% 12.5%, 25% 12.5%); background: var(--red); opacity: 0; animation: stepdot 9s linear infinite; }
   @keyframes stepdot { 0% { opacity: 0; } 4% { opacity: 0.85; } 46% { opacity: 0.85; } 60% { opacity: 0; } 100% { opacity: 0; } }
 
   /* ——— section scaffolding ——— */
@@ -74,7 +74,7 @@
   .field { padding: 0 7vw 12vh; }
   .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 18px; }
   .budcell { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-  .budcell .dot { position: absolute; inset: 12%; border-radius: 50%; transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s; }
+  .budcell .dot { position: absolute; inset: 12%; clip-path: polygon(25% 0%, 75% 0%, 75% 12.5%, 87.5% 12.5%, 87.5% 25%, 100% 25%, 100% 75%, 87.5% 75%, 87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%, 12.5% 87.5%, 12.5% 75%, 0% 75%, 0% 25%, 12.5% 25%, 12.5% 12.5%, 25% 12.5%); transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s; }
   .budcell img { width: 74%; opacity: 0; transform: translateY(14px) scale(0.7); transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; }
   .budcell.pop .dot { transform: scale(0.16); opacity: 0.9; }
   .budcell.pop img { opacity: 1; transform: translateY(0) scale(1); }
@@ -83,12 +83,12 @@
 
   /* ——— dossier modal (the site's pikdex card, re-cut in this book's cloth) ——— */
   .budcell { cursor: pointer; }
-  .budcell::after { content: ''; position: absolute; inset: 6%; border: 3px solid transparent; border-radius: 50%; transition: border-color 0.25s; }
+  .budcell::after { content: ''; position: absolute; inset: 6%; border: 3px solid transparent; transition: border-color 0.25s; }
   .budcell:hover::after { border-color: var(--red); }
   .petfield-head { display: flex; align-items: baseline; gap: 18px; margin: 9vh 0 26px; flex-wrap: wrap; }
   .petfield-head h3 { font-size: clamp(22px, 3.4vw, 40px); font-weight: 900; letter-spacing: -0.01em; }
   .petfield-head .mono { font-size: 12.5px; color: var(--red); font-weight: 700; letter-spacing: 0.2em; }
-  .budcell.is-pet .dot { border-radius: 50%; background: var(--ink) !important; }
+  .budcell.is-pet .dot { background: var(--ink) !important; }
   .budcell.is-pet .nm { font-size: 9.5px; }
   .dos-overlay {
     position: fixed; inset: 0; z-index: 900; background: rgba(17, 17, 17, 0.62);
@@ -106,7 +106,7 @@
   .dos-head .t em { font-style: normal; color: var(--red); }
   .dos-head .hrt { color: var(--red); font-size: 17px; }
   .dos-close { margin-left: auto; width: 30px; height: 30px; background: var(--red); color: #fff; border: 0; font-weight: 900; font-size: 15px; cursor: pointer; }
-  .dos-port { position: relative; padding: 26px 0 12px; text-align: center; background-image: radial-gradient(rgba(17, 17, 17, 0.14) 4px, transparent 5px); background-size: 34px 34px; border-bottom: 3px solid var(--ink); }
+  .dos-port { position: relative; padding: 26px 0 12px; text-align: center; background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><g fill='%23111111' fill-opacity='0.14'><rect x='6' y='4' width='4' height='8'/><rect x='5' y='5' width='6' height='6'/><rect x='4' y='6' width='8' height='4'/></g></svg>"); background-size: 34px 34px; border-bottom: 3px solid var(--ink); }
   .dos-port img { width: 150px; margin: 0 auto; image-rendering: pixelated; }
   .dos-port .stars { font-family: 'Courier New', monospace; font-weight: 700; color: var(--red); letter-spacing: 3px; margin-top: 8px; }
   .dos-forms { display: flex; justify-content: center; gap: 10px; padding: 12px 10px; border-bottom: 3px solid var(--ink); background: var(--cream); }
@@ -328,7 +328,7 @@
   .dosgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 26px; }
   .doscard { border: 3.5px solid var(--ink); background: #fff; padding: 20px 20px 24px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
   .doscard:hover { transform: translateY(-6px) rotate(-0.8deg); box-shadow: 10px 12px 0 var(--red); }
-  .doscard .num { position: absolute; top: -16px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .doscard .num { position: absolute; top: -16px; right: 14px; width: 34px; height: 34px; clip-path: polygon(25% 0%, 75% 0%, 75% 12.5%, 87.5% 12.5%, 87.5% 25%, 100% 25%, 100% 75%, 87.5% 75%, 87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%, 12.5% 87.5%, 12.5% 75%, 0% 75%, 0% 25%, 12.5% 25%, 12.5% 12.5%, 25% 12.5%); background: var(--red); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 14px; }
   .doscard img { width: 96px; margin-bottom: 6px; }
   .doscard h3 { font-size: 19px; font-weight: 900; letter-spacing: 0.02em; }
   .doscard .quote { font-family: 'Courier New', monospace; font-size: 12.5px; color: var(--red); font-weight: 700; margin-top: 4px; }
@@ -347,7 +347,7 @@
   /* ——— ABOUT / footer ——— */
   .about { padding: 12vh 7vw 8vh; display: grid; grid-template-columns: minmax(260px, 620px) 1fr; gap: 40px; }
   .about p { font-size: 16px; line-height: 1.75; color: #333; margin-top: 14px; }
-  .about .bigdot { justify-self: end; align-self: center; width: clamp(120px, 22vw, 300px); aspect-ratio: 1; border-radius: 50%; background: var(--red); position: relative; }
+  .about .bigdot { justify-self: end; align-self: center; width: clamp(120px, 22vw, 300px); aspect-ratio: 1; clip-path: polygon(25% 0%, 75% 0%, 75% 12.5%, 87.5% 12.5%, 87.5% 25%, 100% 25%, 100% 75%, 87.5% 75%, 87.5% 87.5%, 75% 87.5%, 75% 100%, 25% 100%, 25% 87.5%, 12.5% 87.5%, 12.5% 75%, 0% 75%, 0% 25%, 12.5% 25%, 12.5% 12.5%, 25% 12.5%); background: var(--red); position: relative; }
   .about .bigdot img { position: absolute; width: 54%; left: 23%; bottom: 26%; }
   footer { border-top: 4px solid var(--ink); padding: 26px 7vw 34px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: 'Courier New', monospace; font-size: 12.5px; font-weight: 700; }
   footer .r { color: var(--red); }
@@ -577,6 +577,12 @@
     <h2 class="sec-title">BUILT FOR<br>PHONE CASES.</h2>
     <p class="sec-note">Pixel art keeps its contrast at pocket scale — clean edges, flat fields, no mud. The cast tiles into all-over patterns, lines up into rosters, or stars alone as a single hero mark. Plus: a three-panel comic series, so a case can tell a whole tiny story.</p>
     <a href="design/" style="display:inline-block; margin-top:26px; padding:14px 26px; background:var(--ink); color:#fff; font-weight:900; letter-spacing:0.12em; text-decoration:none; font-size:14px; box-shadow:8px 8px 0 var(--red);">▶ OWN_DESIGN.EXE — mix your own case</a>
+  </div>
+  <div class="caserow" style="margin-bottom: 6vh">
+    <div class="casecard"><img class="px" src="assets/case-designs/pixelpolka/pixelpolka-01-classic.png" alt="Pixel Polka: classic field"><div class="cap">PIXEL POLKA Nº1 — SOME DOTS ARE BUDS</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/pixelpolka/pixelpolka-03-orbit.png" alt="Pixel Polka: orbit"><div class="cap">PIXEL POLKA Nº3 — ORBIT</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/pixelpolka/pixelpolka-02-dot-rain.png" alt="Pixel Polka: dot rain"><div class="cap">PIXEL POLKA Nº2 — DOT RAIN</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/pixelpolka/pixelpolka-04-halves.png" alt="Pixel Polka: halves"><div class="cap">PIXEL POLKA Nº4 — HALF & HALF</div></div>
   </div>
   <div class="caserow" style="margin-bottom: 6vh">
     <div class="casecard"><img class="px" src="assets/case-designs/comics/comic-01-the-incident.png" alt="Little Theater comic: The Incident"><div class="cap">LITTLE THEATER Nº1 — THE INCIDENT</div></div>
