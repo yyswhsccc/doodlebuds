@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOODLEBUDS · design studio submission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jersey+25&family=Nunito:ital,wght@0,300..800;1,300..800&family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="crt-overlay"></div>
+<div class="masthead">
+  <h1>DOODLEBUDS</h1>
+  <div class="sub">an original pixel creature collection · interactive submission for RHINOSHIELD design studio</div>
+</div>
+
+<div class="window window-active window-pop">
+  <div class="window-header"><div class="window-title-container"><span class="window-icon">🎨</span>
+    <span class="window-title">own_design.exe — mix &amp; match your case</span></div>
+    <div class="window-controls"><button class="win-btn">–</button><button class="win-btn">□</button><button class="win-btn win-btn-close">×</button></div></div>
+  <div class="window-body">
+    <div class="dyo">
+      <div class="previewbox">
+        <div class="casewrap"><img id="blank" class="blank" alt="case preview"><canvas id="artcv" class="art"></canvas></div>
+        <div class="hint">live preview on the official iPhone 17 Pro case renders — pick a shell, a base, and your crew.</div>
+      </div>
+      <div class="ctl">
+        <h3>CASE</h3>
+        <div class="caseswatches" id="caseswatches"></div>
+        <h3>BASE · checkerboard</h3>
+        <div class="chipsrow" id="baserow">
+          <button class="chip is-on" data-v="pink">pink</button><button class="chip" data-v="lav">lavender</button>
+          <button class="chip" data-v="mint">mint</button><button class="chip" data-v="cream">cream</button>
+          <button class="chip" data-v="night">night</button><button class="chip" data-v="plain">plain</button>
+        </div>
+        <h3>BUDS · pick your crew (tap a face for its dossier)</h3>
+        <div class="budgrid" id="budgrid"></div>
+        <h3>TIER</h3>
+        <div class="chipsrow" id="tierrow">
+          <button class="chip is-on" data-v="1">★ classic</button><button class="chip" data-v="2">★★</button><button class="chip" data-v="3">★★★ apex</button>
+        </div>
+        <h3>LAYOUT</h3>
+        <div class="chipsrow" id="moderow">
+          <button class="chip is-on" data-v="scatter">scatter</button><button class="chip" data-v="grid">pattern grid</button>
+          <button class="chip" data-v="parade">parade</button><button class="chip" data-v="hero">hero</button>
+        </div>
+        <div class="sliderrow">density <input type="range" id="density" min="1" max="10" value="5"></div>
+        <div class="sliderrow">size <input type="range" id="size" min="6" max="26" value="13"></div>
+        <div class="bigbtns">
+          <button class="bigbtn alt" id="shuffle">🎲 shuffle</button>
+          <button class="bigbtn" id="dl">💾 download print file (2048×4300)</button>
+          <button class="bigbtn" id="dlmock">📱 download mockup</button>
+        </div>
+        <div class="hint">the print file is sized for the Design-Your-Own uploader. every sprite is generated live by the
+        collection's own deterministic engine — nothing here is a static image.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="window window-pop" style="z-index:90;">
+  <div class="window-header"><div class="window-title-container"><span class="window-icon">📇</span>
+    <span class="window-title">field_guide.exe — tap any bud above</span></div>
+    <div class="window-controls"><button class="win-btn">–</button><button class="win-btn win-btn-close">×</button></div></div>
+  <div class="window-body"><div class="dossier-wrap" id="dossier"></div></div>
+</div>
+
+<div class="taskbar"><span>DOODLEBUDS · 70 characters · engine-drawn, always in character</span>
+  <span>all artwork © Yongshan Yu <span class="heart">♥</span></span></div>
+<script src="app.js"></script>
+</body>
+</html>

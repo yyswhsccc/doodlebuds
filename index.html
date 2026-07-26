@@ -1,73 +1,608 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DOODLEBUDS · design studio submission</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Jersey+25&family=Nunito:ital,wght@0,300..800;1,300..800&family=Pixelify+Sans:wght@400..700&family=VT323&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="app.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOODLEBUDS — a pixel creature collection · Yongshan Yu</title>
+<style>
+  /* ————————————————————————————————————————————————
+     DOODLEBUDS portfolio v2
+     graphic language: Kusama dot obsession × CdG asymmetric black/white/red
+     every section scrolls into a living pixel theatre
+     ———————————————————————————————————————————————— */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --red: #e60012;          /* kusama red */
+    --ink: #111111;
+    --paper: #ffffff;
+    --cream: #fff8f0;
+    --pink: #ff8fc7;
+    --mint: #9fe8c0;
+    --sky: #41e0ff;
+    --butter: #ffd400;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  img.px { image-rendering: pixelated; display: block; }
+  .mono { font-family: 'Courier New', Courier, monospace; }
+
+  /* ——— kusama dot fields ——— */
+  .dots-red { background: var(--red); background-image: radial-gradient(var(--paper) 9px, transparent 10px); background-size: 64px 64px; }
+  .dots-ink { background: var(--ink); background-image: radial-gradient(var(--paper) 6px, transparent 7px); background-size: 46px 46px; }
+  .dots-paper { background-image: radial-gradient(var(--ink) 5px, transparent 6px); background-size: 42px 42px; }
+
+  /* ——— HERO ——— */
+  .hero { min-height: 100svh; position: relative; display: flex; flex-direction: column; justify-content: center; padding: 6vw 7vw 20vh; overflow: hidden; }
+  .hero-word { font-weight: 900; line-height: 0.82; letter-spacing: -0.03em; }
+  .hero-word .w1 { display: block; font-size: clamp(64px, 16vw, 230px); }
+  .hero-word .w2 {
+    display: block; font-size: clamp(64px, 16vw, 230px);
+    margin-left: clamp(40px, 14vw, 300px);
+    color: var(--paper); -webkit-text-stroke: 3px var(--ink); text-stroke: 3px var(--ink);
+  }
+  .hero-word .w2 em { font-style: normal; color: var(--red); -webkit-text-stroke: 0; }
+  .hero-tag { margin-top: 4vh; margin-left: 2px; font-size: clamp(15px, 1.7vw, 22px); font-weight: 700; }
+  .hero-tag .mono { display: block; margin-top: 8px; font-weight: 400; font-size: 0.82em; color: #555; }
+  .hero-dot { position: absolute; border-radius: 50%; background-color: var(--red); z-index: -1; }
+  .hero-dot.d1 { width: 44vw; height: 44vw; right: -14vw; top: -16vw; }
+  .hero-dot.d2 { width: 9vw; height: 9vw; right: 30vw; top: 30vh; background: var(--ink); }
+  .hero-dot.d3 { width: 4vw; height: 4vw; right: 26vw; top: 16vh; }
+  /* the parade: buds cross the bottom of the hero forever */
+  .parade { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; border-top: 4px solid var(--ink); overflow: hidden; }
+  .parade .walker { position: absolute; bottom: 18px; width: 82px; animation: cross linear infinite; }
+  .parade .walker img { width: 82px; animation: waddle 0.62s ease-in-out infinite; }
+  @keyframes cross { from { left: -120px; } to { left: 104vw; } }
+  @keyframes waddle { 0%, 100% { transform: translateY(0) rotate(-2.5deg); } 50% { transform: translateY(-7px) rotate(2.5deg); } }
+  .parade .steps { position: absolute; bottom: 8px; left: 0; right: 0; height: 8px; }
+  .parade .steps i { position: absolute; bottom: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--red); opacity: 0; animation: stepdot 9s linear infinite; }
+  @keyframes stepdot { 0% { opacity: 0; } 4% { opacity: 0.85; } 46% { opacity: 0.85; } 60% { opacity: 0; } 100% { opacity: 0; } }
+
+  /* ——— section scaffolding ——— */
+  section { position: relative; }
+  .sec-head { padding: 12vh 7vw 6vh; }
+  .sec-kicker { font-family: 'Courier New', monospace; font-size: 14px; letter-spacing: 0.28em; color: var(--red); font-weight: 700; }
+  .sec-title { font-size: clamp(38px, 7vw, 96px); font-weight: 900; letter-spacing: -0.02em; line-height: 0.95; margin-top: 10px; }
+  .sec-title.tilt { transform: rotate(-2deg); transform-origin: left bottom; }
+  .sec-note { max-width: 560px; margin-top: 18px; font-size: 16px; line-height: 1.65; color: #333; }
+
+  /* ——— 50 colorway dot field ——— */
+  .field { padding: 0 7vw 12vh; }
+  .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 18px; }
+  .budcell { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+  .budcell .dot { position: absolute; inset: 12%; border-radius: 50%; transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s; }
+  .budcell img { width: 74%; opacity: 0; transform: translateY(14px) scale(0.7); transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s; }
+  .budcell.pop .dot { transform: scale(0.16); opacity: 0.9; }
+  .budcell.pop img { opacity: 1; transform: translateY(0) scale(1); }
+  .budcell .nm { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); font-family: 'Courier New', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.3s 0.2s; white-space: nowrap; }
+  .budcell.pop .nm { opacity: 0.85; }
+
+  /* ——— THEATRE panels ——— */
+  .theatre { background: var(--cream); border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink); }
+  .stagewrap { display: flex; flex-direction: column; gap: 11vh; padding: 4vh 7vw 14vh; }
+  .stage {
+    position: relative; width: min(860px, 100%); height: 340px;
+    border: 4px solid var(--ink); background: #fff; overflow: hidden;
+    box-shadow: 14px 14px 0 var(--red);
+  }
+  .stage:nth-child(even) { align-self: flex-end; box-shadow: -14px 14px 0 var(--ink); transform: rotate(0.6deg); }
+  .stage:nth-child(odd) { transform: rotate(-0.6deg); }
+  .stage .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 46px; border-top: 3px dashed rgba(17, 17, 17, 0.25); }
+  .stage .label {
+    position: absolute; top: -4px; left: -4px; z-index: 30;
+    background: var(--ink); color: #fff; font-weight: 900; font-size: 14px; letter-spacing: 0.14em;
+    padding: 8px 16px 8px 14px;
+  }
+  .stage .label b { color: var(--red); }
+  .stage .cast { position: absolute; bottom: -2px; right: 10px; z-index: 30; font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; color: #666; background: rgba(255,255,255,0.85); padding: 3px 8px; }
+  .bud { position: absolute; z-index: 5; }
+  .bud img { width: 100%; }
+  .bub {
+    position: absolute; z-index: 26; background: #fff; border: 2.5px solid var(--ink);
+    font-family: 'Courier New', monospace; font-size: 12.5px; font-weight: 700;
+    padding: 6px 10px; border-radius: 10px; white-space: nowrap; opacity: 0;
+    box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.18);
+  }
+  .bub::after { content: ''; position: absolute; left: 18px; bottom: -8px; width: 12px; height: 12px; background: inherit; border-right: 2.5px solid var(--ink); border-bottom: 2.5px solid var(--ink); transform: rotate(45deg) skew(8deg, 8deg); }
+
+  /* scenes only animate when .live (IntersectionObserver) */
+  .stage:not(.live) * { animation-play-state: paused !important; }
+
+  /* — scene 1: THE INCIDENT (16s loop) — */
+  .sc-incident .culprit { left: 6%; bottom: 40px; width: 96px; animation: inc-walk 16s linear infinite; }
+  .sc-incident .culprit img { animation: waddle 0.62s ease-in-out infinite; }
+  @keyframes inc-walk { 0% { left: 6%; } 17% { left: 44%; } 100% { left: 44%; } }
+  .sc-incident .tear {
+    position: absolute; inset: 0; z-index: 10; background: #0a4bd6; color: #fff; padding: 26px 30px;
+    font-family: 'Courier New', monospace; font-weight: 700; font-size: 15px; line-height: 1.9;
+    clip-path: circle(0px at 50% 82%); animation: inc-tear 16s linear infinite;
+  }
+  @keyframes inc-tear {
+    0%, 16% { clip-path: circle(0px at 50% 82%); }
+    38% { clip-path: circle(120% at 50% 82%); }
+    72% { clip-path: circle(120% at 50% 82%); }
+    80%, 100% { clip-path: circle(0px at 62% 30%); }
+  }
+  .sc-incident .culprit2 { left: 44%; bottom: 40px; width: 96px; z-index: 15; opacity: 0; animation: inc-guilt 16s linear infinite; }
+  @keyframes inc-guilt { 0%, 17% { opacity: 0; } 18%, 100% { opacity: 1; } }
+  .sc-incident .b-guilt { left: 40%; bottom: 175px; animation: bub 16s linear infinite; animation-delay: 0s; }
+  .sc-incident .b-guilt { animation-name: inc-bub-guilt; }
+  @keyframes inc-bub-guilt { 0%, 40% { opacity: 0; } 44%, 68% { opacity: 1; } 72%, 100% { opacity: 0; } }
+  .sc-incident .crowd { bottom: auto; top: 34px; width: 62px; z-index: 15; }
+  .sc-incident .crowd img { transform: rotate(4deg); }
+  .sc-incident .c1 { left: 10%; } .sc-incident .c2 { left: 24%; top: 44px; } .sc-incident .c3 { right: 12%; }
+  .sc-incident .b-daze { top: 6px; right: 8%; animation: inc-bub-daze 16s linear infinite; }
+  @keyframes inc-bub-daze { 0%, 48% { opacity: 0; } 52%, 62% { opacity: 1; } 66%, 100% { opacity: 0; } }
+  .sc-incident .fixcursor {
+    position: absolute; z-index: 20; width: 30px; height: 42px; background: #fff; top: -60px; left: 68%;
+    clip-path: polygon(0 0, 0 76%, 26% 61%, 43% 100%, 59% 92%, 45% 58%, 74% 55%);
+    filter: drop-shadow(2px 2px 0 #000) drop-shadow(0 0 9px rgba(65, 224, 255, 0.9));
+    animation: inc-cursor 16s linear infinite;
+  }
+  @keyframes inc-cursor { 0%, 60% { top: -60px; } 68%, 84% { top: 84px; } 88%, 100% { top: -60px; } }
+  .sc-incident .fixmenu {
+    position: absolute; z-index: 21; left: 63%; top: 138px; background: #d4d0c8; border: 2px outset #fff;
+    font-family: 'Courier New', monospace; font-size: 11px; font-weight: 700; color: #111;
+    opacity: 0; animation: inc-menu 16s linear infinite;
+  }
+  .sc-incident .fixmenu div { padding: 4px 10px; border-bottom: 1px solid #b8b4ac; }
+  .sc-incident .fixmenu div:last-child { border: 0; animation: inc-pick 16s linear infinite; }
+  @keyframes inc-menu { 0%, 66% { opacity: 0; } 68%, 84% { opacity: 1; } 86%, 100% { opacity: 0; } }
+  @keyframes inc-pick { 0%, 74% { background: transparent; color: #111; } 76%, 84% { background: #000080; color: #fff; } 86%, 100% { background: transparent; } }
+  .sc-incident .confetti { position: absolute; z-index: 24; top: 30%; width: 9px; height: 9px; opacity: 0; animation: inc-party 16s linear infinite; }
+  @keyframes inc-party { 0%, 84% { opacity: 0; transform: translateY(0); } 87% { opacity: 1; } 98%, 100% { opacity: 0; transform: translateY(110px) rotate(160deg); } }
+  .sc-incident .b-cheer { left: 30%; bottom: 170px; animation: inc-cheer 16s linear infinite; }
+  @keyframes inc-cheer { 0%, 85% { opacity: 0; } 88%, 97% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* — scene 2: THE SERMON (11s loop) — */
+  .sc-sermon .preacher { left: -110px; bottom: 40px; width: 92px; animation: ser-chase 11s linear infinite; }
+  .sc-sermon .preacher img { animation: waddle 0.55s ease-in-out infinite; }
+  @keyframes ser-chase { 0% { left: -110px; } 100% { left: 104%; } }
+  .sc-sermon .victim { left: -110px; bottom: 44px; width: 80px; animation: ser-flee 11s linear infinite; }
+  .sc-sermon .victim img { animation: waddle 0.42s ease-in-out infinite; }
+  @keyframes ser-flee { 0% { left: -240px; } 100% { left: 128%; } }
+  .sc-sermon .b-s1 { bottom: 150px; left: 12%; animation: ser-b1 11s linear infinite; }
+  .sc-sermon .b-s2 { bottom: 150px; left: 44%; animation: ser-b2 11s linear infinite; }
+  .sc-sermon .b-s3 { bottom: 158px; left: 66%; animation: ser-b3 11s linear infinite; }
+  @keyframes ser-b1 { 0%, 8% { opacity: 0; } 12%, 26% { opacity: 1; } 30%, 100% { opacity: 0; } }
+  @keyframes ser-b2 { 0%, 36% { opacity: 0; } 40%, 58% { opacity: 1; } 62%, 100% { opacity: 0; } }
+  @keyframes ser-b3 { 0%, 64% { opacity: 0; } 68%, 84% { opacity: 1; } 88%, 100% { opacity: 0; } }
+
+  /* — scene 3: TOTAL OUTAGE (12s loop) — */
+  .sc-outage .row { position: absolute; bottom: 40px; width: 74px; }
+  .sc-outage .row img { animation: waddle 0.7s ease-in-out infinite; }
+  .sc-outage .o1 { left: 8%; } .sc-outage .o2 { left: 26%; } .sc-outage .o3 { left: 45%; }
+  .sc-outage .o4 { left: 64%; } .sc-outage .o5 { left: 82%; }
+  .sc-outage .minibsod {
+    position: absolute; z-index: 18; top: -34px; left: 50%; transform: translateX(-50%);
+    width: 46px; height: 30px; background: #0a4bd6; color: #fff; font-family: 'Courier New', monospace;
+    font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    opacity: 0; animation: out-pane 12s linear infinite;
+  }
+  .sc-outage .o2 .minibsod { animation-delay: 0.12s; } .sc-outage .o3 .minibsod { animation-delay: 0.24s; }
+  .sc-outage .o4 .minibsod { animation-delay: 0.36s; } .sc-outage .o5 .minibsod { animation-delay: 0.48s; }
+  @keyframes out-pane { 0%, 24% { opacity: 0; } 27%, 62% { opacity: 1; } 65%, 100% { opacity: 0; } }
+  .sc-outage .b-oops { left: 38%; bottom: 158px; animation: out-oops 12s linear infinite; }
+  @keyframes out-oops { 0%, 14% { opacity: 0; } 18%, 30% { opacity: 1; } 34%, 100% { opacity: 0; } }
+  .sc-outage .b-ok { left: 52%; bottom: 158px; animation: out-ok 12s linear infinite; }
+  @keyframes out-ok { 0%, 66% { opacity: 0; } 70%, 88% { opacity: 1; } 92%, 100% { opacity: 0; } }
+
+  /* — scene 4: SIGNAL LOST (10s loop) — */
+  .sc-signal .bud { left: 46%; bottom: 40px; width: 96px; }
+  .sc-signal .bud img { animation: sig-sway 10s linear infinite; }
+  @keyframes sig-sway { 0%, 100% { transform: rotate(0); } 30% { transform: rotate(-4deg); } 60% { transform: rotate(4deg); } }
+  .sc-signal .spinner { position: absolute; left: 49%; top: 70px; z-index: 20; font-family: 'Courier New', monospace; font-size: 30px; font-weight: 900; animation: sig-spin-seq 10s linear infinite; }
+  @keyframes sig-spin-seq {
+    0%, 8% { opacity: 0; content: '◜'; }
+    10%, 44% { opacity: 1; }
+    48%, 100% { opacity: 0; }
+  }
+  .sc-signal .spinner::after { content: '◜'; animation: sig-glyph 0.8s steps(4) infinite; display: inline-block; }
+  @keyframes sig-glyph { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
+  .sc-signal .b-timeout { left: 32%; bottom: 190px; border-color: var(--red); color: var(--red); animation: sig-tm 10s linear infinite; }
+  @keyframes sig-tm { 0%, 46% { opacity: 0; } 50%, 66% { opacity: 1; } 70%, 100% { opacity: 0; } }
+  .sc-signal .b-back { left: 40%; bottom: 190px; animation: sig-bk 10s linear infinite; }
+  @keyframes sig-bk { 0%, 74% { opacity: 0; } 78%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+
+  /* — scene 5: THE HEIST (13s loop) — */
+  .sc-heist .thief { left: -120px; bottom: 44px; width: 88px; animation: hei-run 13s linear infinite; z-index: 8; }
+  .sc-heist .thief img { animation: waddle 0.4s ease-in-out infinite; }
+  @keyframes hei-run { 0% { left: -120px; } 100% { left: 112%; } }
+  .sc-heist .folder { position: absolute; bottom: 96px; left: -60px; z-index: 7; font-size: 38px; animation: hei-fold 13s linear infinite; }
+  @keyframes hei-fold { 0% { left: -60px; } 100% { left: calc(112% + 60px); } }
+  .sc-heist .owner { left: -260px; bottom: 40px; width: 82px; animation: hei-owner 13s linear infinite; }
+  .sc-heist .owner img { animation: waddle 0.34s ease-in-out infinite; }
+  @keyframes hei-owner { 0% { left: -260px; } 100% { left: calc(112% - 140px); } }
+  .sc-heist .b-mine { bottom: 150px; left: 30%; animation: hei-b 13s linear infinite; }
+  @keyframes hei-b { 0%, 30% { opacity: 0; } 34%, 62% { opacity: 1; } 66%, 100% { opacity: 0; } }
+
+  /* — scene 6: GRAND FINALE (14s loop) — */
+  .sc-finale { background: #14121e; }
+  .sc-finale .floor { border-top-color: rgba(255, 255, 255, 0.25); }
+  .sc-finale .cone { left: 44%; bottom: 40px; width: 96px; z-index: 6; }
+  .sc-finale .count {
+    position: absolute; left: 48%; top: 56px; z-index: 20; color: #fff; background: var(--red);
+    font-family: 'Courier New', monospace; font-weight: 900; font-size: 20px; padding: 4px 12px;
+    animation: fin-count 14s linear infinite;
+  }
+  @keyframes fin-count { 0%, 34% { opacity: 1; } 38%, 100% { opacity: 0; } }
+  .sc-finale .watcher { bottom: 44px; width: 72px; }
+  .sc-finale .watcher img { transform: rotate(-9deg); transform-origin: 50% 88%; }
+  .sc-finale .w1 { left: 10%; } .sc-finale .w2 { left: 74%; }
+  .sc-finale .fw { position: absolute; width: 8px; height: 8px; z-index: 12; opacity: 0; animation: fin-burst 14s linear infinite; }
+  @keyframes fin-burst {
+    0%, 38% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+    41% { opacity: 1; }
+    52% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1.1); }
+    62%, 100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) + 26px)) scale(0.6); }
+  }
+  .sc-finale .fw.late { animation-name: fin-burst-late; }
+  @keyframes fin-burst-late {
+    0%, 60% { opacity: 0; transform: translate(0, 0) scale(0.4); }
+    63% { opacity: 1; }
+    76% { opacity: 1; transform: translate(var(--dx), var(--dy)) scale(1.1); }
+    86%, 100% { opacity: 0; transform: translate(var(--dx), calc(var(--dy) + 26px)) scale(0.6); }
+  }
+  .sc-finale .b-ooh { left: 6%; bottom: 150px; animation: fin-ooh 14s linear infinite; }
+  .sc-finale .b-aah { left: 70%; bottom: 155px; animation: fin-aah 14s linear infinite; }
+  @keyframes fin-ooh { 0%, 44% { opacity: 0; } 48%, 60% { opacity: 1; } 64%, 100% { opacity: 0; } }
+  @keyframes fin-aah { 0%, 66% { opacity: 0; } 70%, 84% { opacity: 1; } 88%, 100% { opacity: 0; } }
+
+  /* ——— GROWTH (evolution textbook) ——— */
+  .growth { padding: 0 7vw 14vh; }
+  .growline { display: flex; align-items: flex-end; gap: clamp(8px, 3vw, 34px); flex-wrap: wrap; }
+  .growstep { text-align: center; opacity: 0; transform: translateY(26px); transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .growth.live .growstep { opacity: 1; transform: translateY(0); }
+  .growstep img { margin: 0 auto; }
+  .growstep .cap { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; margin-top: 10px; }
+  .growstep .stars { color: var(--red); letter-spacing: 2px; font-size: 13px; }
+  .growarrow { font-size: 34px; font-weight: 900; color: var(--red); padding-bottom: 60px; opacity: 0; transition: opacity 0.5s 0.4s; }
+  .growth.live .growarrow { opacity: 1; }
+  .growth.live .growstep:nth-child(1) { transition-delay: 0.05s; }
+  .growth.live .growstep:nth-child(3) { transition-delay: 0.25s; }
+  .growth.live .growstep:nth-child(5) { transition-delay: 0.45s; }
+  .growth.live .growstep:nth-child(7) { transition-delay: 0.7s; }
+  .growth.live .growstep:nth-child(9) { transition-delay: 1s; }
+
+  /* ——— FOOTPRINTS strip ——— */
+  .trails { background: var(--ink); color: #fff; border-top: 4px solid var(--ink); padding-bottom: 12vh; }
+  .trails .sec-note { color: #bbb; }
+  .traillane { display: flex; align-items: center; gap: 26px; padding: 20px 7vw; }
+  .traillane .tbud { width: 88px; flex: 0 0 auto; }
+  .traillane .tbud img { width: 88px; animation: waddle 0.7s ease-in-out infinite; }
+  .tline { font-family: 'Courier New', monospace; font-weight: 700; font-size: clamp(14px, 2.4vw, 22px); letter-spacing: 0.14em; white-space: nowrap; overflow: hidden; border-right: 3px solid var(--red); max-width: 0; animation: ttype 6s steps(24) infinite; color: var(--mint); }
+  .traillane:nth-child(3) .tline { color: var(--butter); animation-duration: 7s; }
+  .traillane:nth-child(4) .tline { color: var(--sky); animation-duration: 5.4s; }
+  @keyframes ttype { 0% { max-width: 0; } 55% { max-width: 100%; } 82% { max-width: 100%; } 100% { max-width: 0; } }
+
+  /* ——— DOSSIERS ——— */
+  .dossiers { padding: 0 7vw 14vh; }
+  .dosgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 26px; }
+  .doscard { border: 3.5px solid var(--ink); background: #fff; padding: 20px 20px 24px; position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+  .doscard:hover { transform: translateY(-6px) rotate(-0.8deg); box-shadow: 10px 12px 0 var(--red); }
+  .doscard .num { position: absolute; top: -16px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .doscard img { width: 96px; margin-bottom: 6px; }
+  .doscard h3 { font-size: 19px; font-weight: 900; letter-spacing: 0.02em; }
+  .doscard .quote { font-family: 'Courier New', monospace; font-size: 12.5px; color: var(--red); font-weight: 700; margin-top: 4px; }
+  .doscard p { font-size: 13.5px; line-height: 1.6; color: #444; margin-top: 10px; }
+
+  /* ——— CASES ——— */
+  .cases { background: var(--cream); border-top: 4px solid var(--ink); padding-bottom: 14vh; }
+  .caserow { display: flex; gap: clamp(14px, 3vw, 40px); padding: 0 7vw; flex-wrap: wrap; align-items: flex-start; }
+  .casecard { width: min(240px, 42vw); border: 4px solid var(--ink); background: #fff; padding: 10px; transition: transform 0.35s; }
+  .casecard:nth-child(odd) { transform: rotate(-1.6deg); }
+  .casecard:nth-child(even) { transform: rotate(1.4deg) translateY(18px); }
+  .casecard:hover { transform: rotate(0) translateY(-8px); }
+  .casecard img { width: 100%; }
+  .casecard .cap { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; padding: 8px 2px 2px; }
+
+  /* ——— ABOUT / footer ——— */
+  .about { padding: 12vh 7vw 8vh; display: grid; grid-template-columns: minmax(260px, 620px) 1fr; gap: 40px; }
+  .about p { font-size: 16px; line-height: 1.75; color: #333; margin-top: 14px; }
+  .about .bigdot { justify-self: end; align-self: center; width: clamp(120px, 22vw, 300px); aspect-ratio: 1; border-radius: 50%; background: var(--red); position: relative; }
+  .about .bigdot img { position: absolute; width: 54%; left: 23%; bottom: 26%; }
+  footer { border-top: 4px solid var(--ink); padding: 26px 7vw 34px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: 'Courier New', monospace; font-size: 12.5px; font-weight: 700; }
+  footer .r { color: var(--red); }
+
+  @media (max-width: 720px) {
+    .stage { height: 300px; }
+    .about { grid-template-columns: 1fr; }
+    .about .bigdot { justify-self: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .budcell .dot { transform: scale(0.16); opacity: 0.9; }
+    .budcell img, .growstep, .growarrow { opacity: 1 !important; transform: none !important; }
+    .bub { opacity: 1; }
+  }
+</style>
 </head>
 <body>
-<div class="crt-overlay"></div>
-<div class="masthead">
-  <h1>DOODLEBUDS</h1>
-  <div class="sub">an original pixel creature collection · interactive submission for RHINOSHIELD design studio</div>
-</div>
 
-<div class="window window-active window-pop">
-  <div class="window-header"><div class="window-title-container"><span class="window-icon">🎨</span>
-    <span class="window-title">own_design.exe — mix &amp; match your case</span></div>
-    <div class="window-controls"><button class="win-btn">–</button><button class="win-btn">□</button><button class="win-btn win-btn-close">×</button></div></div>
-  <div class="window-body">
-    <div class="dyo">
-      <div class="previewbox">
-        <div class="casewrap"><img id="blank" class="blank" alt="case preview"><canvas id="artcv" class="art"></canvas></div>
-        <div class="hint">live preview on the official iPhone 17 Pro case renders — pick a shell, a base, and your crew.</div>
-      </div>
-      <div class="ctl">
-        <h3>CASE</h3>
-        <div class="caseswatches" id="caseswatches"></div>
-        <h3>BASE · checkerboard</h3>
-        <div class="chipsrow" id="baserow">
-          <button class="chip is-on" data-v="pink">pink</button><button class="chip" data-v="lav">lavender</button>
-          <button class="chip" data-v="mint">mint</button><button class="chip" data-v="cream">cream</button>
-          <button class="chip" data-v="night">night</button><button class="chip" data-v="plain">plain</button>
-        </div>
-        <h3>BUDS · pick your crew (tap a face for its dossier)</h3>
-        <div class="budgrid" id="budgrid"></div>
-        <h3>TIER</h3>
-        <div class="chipsrow" id="tierrow">
-          <button class="chip is-on" data-v="1">★ classic</button><button class="chip" data-v="2">★★</button><button class="chip" data-v="3">★★★ apex</button>
-        </div>
-        <h3>LAYOUT</h3>
-        <div class="chipsrow" id="moderow">
-          <button class="chip is-on" data-v="scatter">scatter</button><button class="chip" data-v="grid">pattern grid</button>
-          <button class="chip" data-v="parade">parade</button><button class="chip" data-v="hero">hero</button>
-        </div>
-        <div class="sliderrow">density <input type="range" id="density" min="1" max="10" value="5"></div>
-        <div class="sliderrow">size <input type="range" id="size" min="6" max="26" value="13"></div>
-        <div class="bigbtns">
-          <button class="bigbtn alt" id="shuffle">🎲 shuffle</button>
-          <button class="bigbtn" id="dl">💾 download print file (2048×4300)</button>
-          <button class="bigbtn" id="dlmock">📱 download mockup</button>
-        </div>
-        <div class="hint">the print file is sized for the Design-Your-Own uploader. every sprite is generated live by the
-        collection's own deterministic engine — nothing here is a static image.</div>
-      </div>
+<!-- ———————————————— HERO ———————————————— -->
+<section class="hero">
+  <div class="hero-dot d1 dots-red"></div>
+  <div class="hero-dot d2"></div>
+  <div class="hero-dot d3"></div>
+  <h1 class="hero-word">
+    <span class="w1">DOODLE</span>
+    <span class="w2">BUDS<em>.</em></span>
+  </h1>
+  <p class="hero-tag">
+    tiny gardens, tiny attitudes.
+    <span class="mono">318 sprites · 70 characters · every pixel placed on purpose · © Yongshan Yu</span>
+  </p>
+  <div class="parade" id="parade"></div>
+</section>
+
+<!-- ———————————————— 50 COLORWAYS ———————————————— -->
+<section>
+  <div class="sec-head">
+    <div class="sec-kicker">01 · THE OBSESSION</div>
+    <h2 class="sec-title tilt">FIFTY DOTS,<br>FIFTY CHARACTERS.</h2>
+    <p class="sec-note">A 50-step hue wheel names the whole cast — the color IS the character. Scroll, and the dots wake up: Pixel, Cursor, Vim, Segfault, and forty-six colleagues, each with a dossier of its own.</p>
+  </div>
+  <div class="field">
+    <div class="field-grid" id="fieldGrid"></div>
+  </div>
+</section>
+
+<!-- ———————————————— THEATRE ———————————————— -->
+<section class="theatre">
+  <div class="sec-head">
+    <div class="sec-kicker">02 · THE THEATRE</div>
+    <h2 class="sec-title">THEY DO NOT<br>POSE. <span style="color:var(--red)">THEY ACT.</span></h2>
+    <p class="sec-note">Every character ships with behavior, not just a face. These scenes run on the collection's own stage engine — mischief, sermons, outages, and one apocalypse that keeps not arriving.</p>
+  </div>
+
+  <div class="stagewrap">
+
+    <!-- THE INCIDENT -->
+    <div class="stage sc-incident">
+      <div class="label">SCENE 01 — <b>THE INCIDENT</b></div>
+      <div class="bud culprit"><img class="px" src="assets/characters-full/sp-bsodjr-f3.png" alt="BSOD JR. walking"></div>
+      <div class="tear">$ ./life<br>:( a problem has been detected<br>collecting error info… 40% (it is always 40%)</div>
+      <div class="bud culprit2"><img class="px" src="assets/characters-full/sp-bsodjr-f3.png" alt="BSOD JR. guilty at center stage"></div>
+      <div class="bub b-guilt">…did i break it? (ToT)</div>
+      <div class="bud crowd c1"><img class="px" src="assets/characters-full/w07-f3.png" alt=""></div>
+      <div class="bud crowd c2"><img class="px" src="assets/characters-full/w21-f3.png" alt=""></div>
+      <div class="bud crowd c3"><img class="px" src="assets/characters-full/w33-f3.png" alt=""></div>
+      <div class="bub b-daze">where is the floor</div>
+      <div class="fixcursor"></div>
+      <div class="fixmenu"><div>what happened here</div><div>blame the intern</div><div>fix everything (recommended)</div></div>
+      <i class="confetti" style="left:30%; background:#ff2fae"></i>
+      <i class="confetti" style="left:46%; background:#41e0ff; animation-delay:0.12s"></i>
+      <i class="confetti" style="left:58%; background:#ffd400; animation-delay:0.2s"></i>
+      <i class="confetti" style="left:70%; background:#7cfc00; animation-delay:0.08s"></i>
+      <div class="bub b-cheer">IT FIXED ITSELF!!</div>
+      <div class="floor"></div>
+      <div class="cast">cast: BSOD JR. + bystanders</div>
+    </div>
+
+    <!-- THE SERMON -->
+    <div class="stage sc-sermon">
+      <div class="label">SCENE 02 — <b>THE SERMON</b></div>
+      <div class="bud victim"><img class="px" src="assets/characters-full/w41-f2.png" alt="a colleague fleeing"></div>
+      <div class="bud preacher"><img class="px" src="assets/characters-full/sp-kernelpg-f3.png" alt="PENGUIN CORE preaching"></div>
+      <div class="bub b-s1">quick interjection—</div>
+      <div class="bub b-s2">btw i use arch</div>
+      <div class="bub b-s3">…my lunch break…</div>
+      <div class="floor"></div>
+      <div class="cast">cast: PENGUIN CORE + one exhausted colleague</div>
+    </div>
+
+    <!-- TOTAL OUTAGE -->
+    <div class="stage sc-outage">
+      <div class="label">SCENE 03 — <b>TOTAL OUTAGE</b></div>
+      <div class="bud row o1"><img class="px" src="assets/characters-full/w03-f2.png" alt=""><div class="minibsod">:(</div></div>
+      <div class="bud row o2"><img class="px" src="assets/characters-full/w17-f2.png" alt=""><div class="minibsod">:(</div></div>
+      <div class="bud row o3"><img class="px" src="assets/characters-full/sp-bsodjr-f2.png" alt="BSOD JR. mid-sneeze"><div class="minibsod">:(</div></div>
+      <div class="bud row o4"><img class="px" src="assets/characters-full/w28-f2.png" alt=""><div class="minibsod">:(</div></div>
+      <div class="bud row o5"><img class="px" src="assets/characters-full/w45-f2.png" alt=""><div class="minibsod">:(</div></div>
+      <div class="bub b-oops">sorry. the update went out</div>
+      <div class="bub b-ok">…everyone rebooted ok?</div>
+      <div class="floor"></div>
+      <div class="cast">cast: BSOD JR. + four innocent coworkers</div>
+    </div>
+
+    <!-- SIGNAL LOST -->
+    <div class="stage sc-signal">
+      <div class="label">SCENE 04 — <b>SIGNAL LOST</b></div>
+      <div class="bud"><img class="px" src="assets/characters-full/sp-wifi-f3.png" alt="SIGNAL waiting for the network" style="width:96px"></div>
+      <div class="spinner"></div>
+      <div class="bub b-timeout">✕ request timed out</div>
+      <div class="bub b-back">back online ✓</div>
+      <div class="floor"></div>
+      <div class="cast">cast: SIGNAL (full bars everywhere. except here.)</div>
+    </div>
+
+    <!-- THE HEIST -->
+    <div class="stage sc-heist">
+      <div class="label">SCENE 05 — <b>THE HEIST</b></div>
+      <div class="bud thief"><img class="px" src="assets/characters-full/sp-pointer-f3.png" alt="POINTER stealing a folder"></div>
+      <div class="folder">📁</div>
+      <div class="bud owner"><img class="px" src="assets/characters-full/w12-f2.png" alt="the folder's owner in pursuit"></div>
+      <div class="bub b-mine">MY FILE!!</div>
+      <div class="floor"></div>
+      <div class="cast">cast: POINTER (your cursor has opinions)</div>
+    </div>
+
+    <!-- GRAND FINALE -->
+    <div class="stage sc-finale">
+      <div class="label">SCENE 06 — <b>GRAND FINALE</b></div>
+      <div class="count">00:03</div>
+      <div class="bud cone"><img class="px" src="assets/characters-full/sp-y2kbug-f3.png" alt="Y2K BUG, dressed for the apocalypse"></div>
+      <div class="bud watcher w1"><img class="px" src="assets/characters-full/w09-f2.png" alt=""></div>
+      <div class="bud watcher w2"><img class="px" src="assets/characters-full/w25-f2.png" alt=""></div>
+      <i class="fw" style="left:30%; top:36%; --dx:-42px; --dy:-30px; background:#ff2fae"></i>
+      <i class="fw" style="left:31%; top:36%; --dx:40px; --dy:-26px; background:#41e0ff"></i>
+      <i class="fw" style="left:30%; top:37%; --dx:-14px; --dy:44px; background:#ffd400"></i>
+      <i class="fw" style="left:31%; top:36%; --dx:18px; --dy:-48px; background:#7cfc00"></i>
+      <i class="fw late" style="left:64%; top:30%; --dx:-38px; --dy:-24px; background:#c9a7f5"></i>
+      <i class="fw late" style="left:65%; top:30%; --dx:34px; --dy:-34px; background:#ff8a5c"></i>
+      <i class="fw late" style="left:64%; top:31%; --dx:-20px; --dy:40px; background:#ffd400"></i>
+      <i class="fw late" style="left:65%; top:30%; --dx:26px; --dy:38px; background:#ff2fae"></i>
+      <div class="bub b-ooh">oooooh…</div>
+      <div class="bub b-aah">aaaaah…</div>
+      <div class="floor"></div>
+      <div class="cast">cast: Y2K BUG — the apocalypse can wait ♡</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ———————————————— GROWTH ———————————————— -->
+<section class="growth" id="growth">
+  <div class="sec-head">
+    <div class="sec-kicker">03 · THE PROMOTION STORY</div>
+    <h2 class="sec-title tilt">EVERY GARDEN<br>GROWS UP.</h2>
+    <p class="sec-note">Three garden stages, then two costume tiers — a full promotion arc told in devops folklore, from MERGE HORNS ("survived a rebase onto main") to the FIVE-NINES HALO ("99.999% divine").</p>
+  </div>
+  <div class="field growline">
+    <div class="growstep"><img class="px" src="assets/characters-full/w06-s0.png" width="70" alt="sprout stage"><div class="cap">SPROUT<br><span class="stars">·</span></div></div>
+    <div class="growarrow">➜</div>
+    <div class="growstep"><img class="px" src="assets/characters-full/w06-s1.png" width="92" alt="bloom stage"><div class="cap">BUDDING<br><span class="stars">·</span></div></div>
+    <div class="growarrow">➜</div>
+    <div class="growstep"><img class="px" src="assets/characters-full/w06-s2.png" width="116" alt="full bloom"><div class="cap">FULL BLOOM<br><span class="stars">★</span></div></div>
+    <div class="growarrow">➜</div>
+    <div class="growstep"><img class="px" src="assets/characters-full/w06-f2.png" width="140" alt="tier two costume"><div class="cap">MERGE HORNS<br><span class="stars">★★</span></div></div>
+    <div class="growarrow">➜</div>
+    <div class="growstep"><img class="px" src="assets/characters-full/w06-f3.png" width="170" alt="apex tier"><div class="cap">FIVE-NINES HALO<br><span class="stars">★★★</span></div></div>
+  </div>
+</section>
+
+<!-- ———————————————— FOOTPRINTS ———————————————— -->
+<section class="trails">
+  <div class="sec-head">
+    <div class="sec-kicker" style="color:var(--pink)">04 · THE FOOTPRINTS</div>
+    <h2 class="sec-title" style="color:#fff">SOME TRAILS<br>ARE SENTENCES.</h2>
+    <p class="sec-note">At apex tier every character earns a signature trail. Some sparkle. Some rain glyphs. Some… type.</p>
+  </div>
+  <div class="traillane"><div class="tbud"><img class="px" src="assets/characters-full/w40-f3.png" alt="Vim"></div><div class="tline">:q&nbsp; :q!&nbsp; :wq&nbsp; ESC ESC ESC</div></div>
+  <div class="traillane"><div class="tbud"><img class="px" src="assets/characters-full/w15-f3.png" alt="Modem"></div><div class="tline">56k · EEE-AW · CONNECTED ♡</div></div>
+  <div class="traillane"><div class="tbud"><img class="px" src="assets/characters-full/sp-matrix-f3.png" alt="Neo Sprout"></div><div class="tline">wake up… follow the green rain</div></div>
+</section>
+
+<!-- ———————————————— DOSSIERS ———————————————— -->
+<section class="dossiers">
+  <div class="sec-head">
+    <div class="sec-kicker">05 · THE DESK PETS</div>
+    <h2 class="sec-title tilt">PERSONNEL FILES OF A<br>VERY SMALL MACHINE.</h2>
+    <p class="sec-note">Twenty-two specials, each a beloved computer moment given a body and a personnel file. Six of them, declassified:</p>
+  </div>
+  <div class="field">
+    <div class="dosgrid">
+      <div class="doscard"><div class="num">01</div><img class="px" src="assets/characters-full/sp-bsodjr-f3.png" alt=""><h3>BSOD JR.</h3><div class="quote">"have you tried turning me off and on?"</div><p>Falls over :( then gets right back up. Files a crash report about itself each time. Sometimes takes the whole desk down with it — then apologizes to every single machine.</p></div>
+      <div class="doscard"><div class="num">02</div><img class="px" src="assets/characters-full/sp-glitch-f3.png" alt=""><h3>ARTIFACT</h3><div class="quote">"do not re-encode me"</div><p>A compression artifact that gained sentience. Gives lossy hugs. Sheds corrupted macroblocks wherever it walks and calls them "texture".</p></div>
+      <div class="doscard"><div class="num">03</div><img class="px" src="assets/characters-full/sp-y2kbug-f3.png" alt=""><h3>Y2K BUG</h3><div class="quote">"the year is 19100. probably fine"</div><p>The apocalypse that RSVP'd and never showed — still dressed for it. Counts down hourly. Once in a blue moon, the fireworks actually arrive.</p></div>
+      <div class="doscard"><div class="num">04</div><img class="px" src="assets/characters-full/sp-kernelpg-f3.png" alt=""><h3>PENGUIN CORE</h3><div class="quote">"btw i use arch"</div><p>Monolithic, open-source, will explain itself unprompted. Traps colleagues in dependency hell; a Ctrl+C from a friend is the only rescue.</p></div>
+      <div class="doscard"><div class="num">05</div><img class="px" src="assets/characters-full/sp-captcha-f3.png" alt=""><h3>NOT A ROBOT</h3><div class="quote">"select all squares with friends"</div><p>Passes every CAPTCHA first try. Suspiciously good at crosswalks. Occasionally runs a tiny 3×3 exam on a passerby — the verdict is always green.</p></div>
+      <div class="doscard"><div class="num">06</div><img class="px" src="assets/characters-full/sp-cacheghost-f3.png" alt=""><h3>CACHE GHOST</h3><div class="quote">"you cleared me. i came back."</div><p>The cache you emptied, back from the beyond. Walks with a 1.2-second echo of itself. Refuses to be garbage-collected.</p></div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="window window-pop" style="z-index:90;">
-  <div class="window-header"><div class="window-title-container"><span class="window-icon">📇</span>
-    <span class="window-title">field_guide.exe — tap any bud above</span></div>
-    <div class="window-controls"><button class="win-btn">–</button><button class="win-btn win-btn-close">×</button></div></div>
-  <div class="window-body"><div class="dossier-wrap" id="dossier"></div></div>
-</div>
+<!-- ———————————————— CASES ———————————————— -->
+<section class="cases">
+  <div class="sec-head">
+    <div class="sec-kicker">06 · FOR YOUR POCKET</div>
+    <h2 class="sec-title">BUILT FOR<br>PHONE CASES.</h2>
+    <p class="sec-note">Pixel art keeps its contrast at pocket scale — clean edges, flat fields, no mud. The cast tiles into all-over patterns, lines up into rosters, or stars alone as a single hero mark. Plus: a three-panel comic series, so a case can tell a whole tiny story.</p>
+    <a href="design/" style="display:inline-block; margin-top:26px; padding:14px 26px; background:var(--ink); color:#fff; font-weight:900; letter-spacing:0.12em; text-decoration:none; font-size:14px; box-shadow:8px 8px 0 var(--red);">▶ OWN_DESIGN.EXE — mix your own case</a>
+  </div>
+  <div class="caserow" style="margin-bottom: 6vh">
+    <div class="casecard"><img class="px" src="assets/case-designs/comics/comic-01-the-incident.png" alt="Little Theater comic: The Incident"><div class="cap">LITTLE THEATER Nº1 — THE INCIDENT</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/comics/comic-02-btw-i-use-arch.png" alt="Little Theater comic: btw i use arch"><div class="cap">LITTLE THEATER Nº2 — BTW I USE ARCH</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/comics/comic-03-total-outage.png" alt="Little Theater comic: Total Outage"><div class="cap">LITTLE THEATER Nº3 — TOTAL OUTAGE</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/comics/comic-04-grand-finale.png" alt="Little Theater comic: Grand Finale"><div class="cap">LITTLE THEATER Nº4 — GRAND FINALE</div></div>
+  </div>
+  <div class="caserow">
+    <div class="casecard"><img class="px" src="assets/case-designs/01-garden-roll-call.png" alt="Garden Roll Call case design"><div class="cap">Nº1 — GARDEN ROLL CALL</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/03-night-shift.png" alt="Night Shift case design"><div class="cap">Nº3 — NIGHT SHIFT</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/07-apex-parade.png" alt="Apex Parade case design"><div class="cap">Nº7 — APEX PARADE</div></div>
+    <div class="casecard"><img class="px" src="assets/case-designs/06-bloom-grid.png" alt="Bloom Grid case design"><div class="cap">Nº6 — BLOOM GRID</div></div>
+  </div>
+</section>
 
-<div class="taskbar"><span>DOODLEBUDS · 70 characters · engine-drawn, always in character</span>
-  <span>all artwork © Yongshan Yu <span class="heart">♥</span></span></div>
-<script src="app.js"></script>
+<!-- ———————————————— ABOUT ———————————————— -->
+<section class="about">
+  <div>
+    <div class="sec-kicker">07 · THE ARTIST</div>
+    <h2 class="sec-title tilt">YONGSHAN YU.</h2>
+    <p>Canada-based pixel artist and software engineer. By day she leads AI and learning-platform engineering as a full-stack systems lead; by night she draws very small creatures, one pixel at a time.</p>
+    <p>Every Doodlebud begins as a hand-authored text template on an 11-pixel grid, rendered by a deterministic pixel engine she built herself. The engine is not a shortcut: each pixel on screen was placed there on purpose. She believes small art should still be careful art — and that the best characters are the ones you want to keep on your desk.</p>
+  </div>
+  <div class="bigdot"><img class="px" src="assets/characters-full/w00-f3.png" alt="Pixel, the first Doodlebud"></div>
+</section>
+
+<footer>
+  <div>DOODLEBUDS<span class="r">.</span> an original pixel creature collection</div>
+  <div>all artwork © Yongshan Yu · 2026</div>
+</footer>
+
+<script>
+  // ——— hero parade: six buds forever crossing, with footprint dots ———
+  const PARADE = ['w02-f3', 'sp-wifi-f3', 'w19-f2', 'sp-y2kbug-f3', 'w36-f3', 'sp-kernelpg-f2'];
+  const parade = document.getElementById('parade');
+  PARADE.forEach((k, i) => {
+    const d = document.createElement('div');
+    d.className = 'walker';
+    d.style.animationDuration = (16 + i * 2.3) + 's';
+    d.style.animationDelay = (-i * 3.1) + 's';
+    d.innerHTML = '<img class="px" src="assets/characters-full/' + k + '.png" alt="">';
+    parade.appendChild(d);
+  });
+  const steps = document.createElement('div');
+  steps.className = 'steps';
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement('i');
+    s.style.left = (i * 4) + '%';
+    s.style.animationDelay = (i * 0.35) + 's';
+    if (i % 3 === 1) s.style.background = '#111';
+    steps.appendChild(s);
+  }
+  parade.appendChild(steps);
+
+  // ——— the 50-dot field: dots that wake into characters on scroll ———
+  const NAMES = ['Pixel', 'Cursor', 'Sprite', 'Voxel', 'Glyph', 'Chip', 'Bit', 'Nibble', 'Byte', 'Cache',
+    'Cookie', 'Cookie++', 'Token', 'Packet', 'Ping', 'Modem', 'Router', 'Widget', 'Kernel', 'Daemon',
+    'Cron', 'Bash', 'Grep', 'Regex', 'Lambda', 'Stack', 'Heap', 'Queue', 'Hash', 'Salt',
+    'Nonce', 'Blob', 'Node', 'Patch', 'Diff', 'Fork', 'Fork++', 'Merge', 'Echo', 'Curl',
+    'Vim', 'Tarball', 'Floppy', 'Zipette', 'Socket', 'Proxy', 'Mutex', 'Async', 'Loopy', 'Segfault'];
+  const HUES = [3, 10, 17, 25, 32, 39, 46, 54, 61, 68, 75, 82, 90, 97, 104, 111, 118, 126, 133, 140,
+    147, 154, 162, 169, 176, 183, 190, 198, 205, 212, 219, 226, 234, 241, 248, 255, 262, 270, 277, 284,
+    291, 298, 306, 313, 320, 327, 334, 342, 349, 356];
+  const grid = document.getElementById('fieldGrid');
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.className = 'budcell';
+    const id = 'w' + String(i).padStart(2, '0');
+    c.innerHTML =
+      '<div class="dot" style="background:hsl(' + HUES[i] + ' 78% 62%)"></div>' +
+      '<img class="px" loading="lazy" src="assets/characters-full/' + id + '-s2.png" alt="' + NAMES[i] + '">' +
+      '<div class="nm">' + NAMES[i] + '</div>';
+    grid.appendChild(c);
+  }
+  const cellObs = new IntersectionObserver((es) => {
+    es.forEach((e) => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        setTimeout(() => el.classList.add('pop'), (Array.prototype.indexOf.call(grid.children, el) % 10) * 70);
+        cellObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.budcell').forEach((c) => cellObs.observe(c));
+
+  // ——— stages + growth wake when scrolled into view ———
+  const liveObs = new IntersectionObserver((es) => {
+    es.forEach((e) => e.target.classList.toggle('live', e.isIntersecting));
+  }, { threshold: 0.35 });
+  document.querySelectorAll('.stage, .growth').forEach((s) => liveObs.observe(s));
+</script>
 </body>
 </html>
