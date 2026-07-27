@@ -97,22 +97,24 @@
   .budcell.is-pet .dot { background: var(--ink) !important; }
   .budcell.is-pet .nm { font-size: 9.5px; }
   .dos-overlay {
-    position: fixed; inset: 0; z-index: 900; background: rgba(17, 17, 17, 0.62);
+    position: fixed; inset: 0; z-index: 900; background: rgba(42, 10, 32, 0.55);
     display: none; align-items: center; justify-content: center; padding: 4vh 4vw;
   }
   .dos-overlay.open { display: flex; }
+  .dos-wrap { position: relative; animation: dos-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .dos-wrap .pd { position: absolute; clip-path: polygon(65% 0%, 65% 5%, 75% 5%, 75% 10%, 85% 10%, 85% 15%, 90% 15%, 90% 20%, 90% 25%, 95% 25%, 95% 30%, 95% 35%, 100% 35%, 100% 40%, 100% 45%, 100% 50%, 100% 55%, 100% 60%, 100% 65%, 95% 65%, 95% 70%, 95% 75%, 90% 75%, 90% 80%, 90% 85%, 85% 85%, 85% 90%, 75% 90%, 75% 95%, 65% 95%, 65% 100%, 35% 100%, 35% 95%, 25% 95%, 25% 90%, 15% 90%, 15% 85%, 10% 85%, 10% 80%, 10% 75%, 5% 75%, 5% 70%, 5% 65%, 0% 65%, 0% 60%, 0% 55%, 0% 50%, 0% 45%, 0% 40%, 0% 35%, 5% 35%, 5% 30%, 5% 25%, 10% 25%, 10% 20%, 10% 15%, 15% 15%, 15% 10%, 25% 10%, 25% 5%, 35% 5%, 35% 0%); pointer-events: none; }
   .dossier {
     width: min(440px, 94vw); max-height: 92svh; overflow-y: auto; background: #fff;
-    border: 4px solid var(--ink); box-shadow: 16px 16px 0 var(--red);
-    animation: dos-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 3px solid #f0509f;
+    box-shadow: 0 0 0 2px #fff, 5px 5px 0 var(--pink), 9px 9px 0 rgba(108, 196, 245, 0.55);
   }
   @keyframes dos-pop { 0% { transform: scale(0.82) rotate(-1.6deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-  .dos-head { display: flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 2; }
+  .dos-head { display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, #ff8fc7, #c9a7f5 60%, #a8e0ff); color: #fff; text-shadow: 1px 1px 0 rgba(90, 61, 110, 0.85); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5); padding: 12px 16px; position: sticky; top: 0; z-index: 2; }
   .dos-head .t { font-family: var(--round); font-weight: 700; font-size: 19px; letter-spacing: 0.02em; }
-  .dos-head .t em { font-style: normal; color: var(--red); }
-  .dos-head .hrt { color: var(--red); font-size: 17px; }
-  .dos-close { margin-left: auto; width: 30px; height: 30px; background: var(--red); color: #fff; border: 0; font-weight: 900; font-size: 15px; cursor: pointer; }
-  .dos-port { position: relative; height: 250px; overflow: hidden; border-bottom: 3px solid var(--ink); background: #fff; }
+  .dos-head .t em { font-style: normal; color: #ffe9a8; }
+  .dos-head .hrt { color: #fff; font-size: 17px; }
+  .dos-close { margin-left: auto; width: 30px; height: 30px; background: #f0509f; color: #fff; border: 2px solid #fff; font-weight: 900; font-size: 15px; cursor: pointer; text-shadow: none; }
+  .dos-port { position: relative; height: 250px; overflow: hidden; border-bottom: 3px solid #2a0a20; background: #fff; }
   .dos-walk { position: absolute; width: 108px; transition: left 2.1s linear, top 2.1s linear; will-change: left, top; }
   .dos-walk img { width: 100%; image-rendering: pixelated; animation: waddle 0.62s ease-in-out infinite; }
   .dos-walk.flip img { transform: scaleX(-1); }
@@ -154,22 +156,22 @@
   @keyframes fxfall { to { transform: translateY(270px); opacity: 0; } }
   .dos-fx .fxconf { position: absolute; width: 7px; height: 7px; animation: fxfall 2.2s ease-in forwards; }
   .dos-fx .fxveil { position: absolute; width: 190px; height: 190px; background: radial-gradient(rgba(10, 8, 20, 0.55), transparent 70%); transition: left 2.1s linear, top 2.1s linear; }
-  .dos-port .stars { position: absolute; right: 12px; bottom: 8px; font-family: 'Courier New', monospace; font-weight: 700; color: var(--red); letter-spacing: 3px; z-index: 7; }
-  .dos-forms { display: flex; justify-content: center; gap: 10px; padding: 12px 10px; border-bottom: 3px solid var(--ink); background: var(--cream); }
+  .dos-port .stars { position: absolute; right: 12px; bottom: 8px; font-family: 'Courier New', monospace; font-weight: 700; color: #f0509f; letter-spacing: 3px; z-index: 7; }
+  .dos-forms { display: flex; justify-content: center; gap: 10px; padding: 12px 10px; border-bottom: 3px solid #2a0a20; background: var(--cream); }
   .dos-forms button { background: none; border: 2.5px solid transparent; padding: 4px; cursor: pointer; }
-  .dos-forms button.on { border-color: var(--red); }
+  .dos-forms button.on { border-color: #f0509f; }
   .dos-forms img { width: 34px; display: block; image-rendering: pixelated; }
   .dos-body { padding: 18px 20px 22px; }
   .dos-duty { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; }
-  .dos-duty b { color: var(--red); }
+  .dos-duty b { color: #f0509f; }
   .dos-story { font-family: var(--round); font-size: 13px; line-height: 1.75; color: #333; margin-top: 12px; }
-  .dos-quote { font-family: 'Courier New', monospace; font-style: italic; font-size: 13.5px; color: var(--red); font-weight: 700; margin-top: 12px; }
+  .dos-quote { font-family: 'Courier New', monospace; font-style: italic; font-size: 13.5px; color: #f0509f; font-weight: 700; margin-top: 12px; }
   .dos-stats { margin-top: 16px; display: grid; grid-template-columns: 52px 1fr 40px; gap: 7px 10px; align-items: center; }
   .dos-stats .lb { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; }
   .dos-stats .vl { font-family: 'Courier New', monospace; font-size: 11.5px; font-weight: 700; text-align: right; color: #666; }
-  .dos-bar { height: 13px; border: 2px solid var(--ink); background: #fff; }
-  .dos-bar i { display: block; height: 100%; background: repeating-linear-gradient(45deg, var(--ink) 0 6px, var(--red) 6px 12px); }
-  @media (prefers-reduced-motion: reduce) { .dossier { animation: none; } }
+  .dos-bar { height: 13px; border: 2px solid #2a0a20; background: #fff; }
+  .dos-bar i { display: block; height: 100%; background: repeating-linear-gradient(45deg, var(--pink) 0 6px, var(--butter) 6px 12px); }
+  @media (prefers-reduced-motion: reduce) { .dos-wrap { animation: none; } }
 
   /* ——— THEATRE panels ——— */
   .theatre { background-color: var(--cream); background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'><g fill='%23ffffff' fill-opacity='0.75'><rect x='6' y='4' width='4' height='8'/><rect x='5' y='5' width='6' height='6'/><rect x='4' y='6' width='8' height='4'/></g></svg>"); background-size: 58px 58px; border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink); }
@@ -449,6 +451,15 @@
 
 <!-- ———————————————— DOSSIER MODAL ———————————————— -->
 <div class="dos-overlay" id="dosOverlay">
+  <div class="dos-wrap">
+  <span class="pd" style="width:30px;height:30px;top:-20px;left:-26px;background:#c9a7f5"></span>
+  <span class="pd" style="width:12px;height:12px;top:-38px;left:31%;background:var(--butter)"></span>
+  <span class="pd" style="width:22px;height:22px;top:-24px;right:-28px;background:var(--pink)"></span>
+  <span class="pd" style="width:14px;height:14px;top:52px;right:-40px;background:#a8e0ff"></span>
+  <span class="pd" style="width:16px;height:16px;bottom:64px;left:-38px;background:var(--mint)"></span>
+  <span class="pd" style="width:12px;height:12px;bottom:-14px;left:20%;background:#a8e0ff"></span>
+  <span class="pd" style="width:26px;height:26px;bottom:-30px;right:16%;background:var(--butter)"></span>
+  <span class="pd" style="width:18px;height:18px;bottom:-24px;right:-24px;background:var(--pink)"></span>
   <div class="dossier" role="dialog" aria-modal="true">
     <div class="dos-head"><span class="t" id="dosName"></span><span class="hrt">♥</span><button class="dos-close" id="dosClose" aria-label="close">✕</button></div>
     <div class="dos-port" id="dosPort"><div class="dos-fx" id="dosFx"></div><div class="dos-walk" id="dosWalk"><img id="dosImg" alt=""></div><div class="stars" id="dosStars"></div></div>
@@ -459,6 +470,7 @@
       <div class="dos-quote" id="dosQuote"></div>
       <div class="dos-stats" id="dosStats"></div>
     </div>
+  </div>
   </div>
 </div>
 
