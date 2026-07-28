@@ -1109,8 +1109,8 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
       dotBusy = true;
       seq([['hasdoor', 1, 0], ['peek', 1, 450], ['exc', 1, 750], ['peek', 0, 2050], ['exc', 0, 2050], ['hasdoor', 0, 2600]], 3200);
     };
-    if (!localStorage.getItem('db-door-greeted2')) {
-      setTimeout(() => { doorGreet(); localStorage.setItem('db-door-greeted2', '1'); }, 2400);
+    if (!sessionStorage.getItem('db-door-hello')) {
+      setTimeout(() => { doorGreet(); sessionStorage.setItem('db-door-hello', '1'); }, 2400);
     }
     const dotEyes = () => { if (dotBusy) return; d2.classList.add('eyes'); setTimeout(() => d2.classList.remove('eyes'), 1700); };
     const dotHop = () => { if (dotBusy) return; d2.classList.add('hop'); setTimeout(() => d2.classList.remove('hop'), 900); };
