@@ -58,7 +58,8 @@
   .hero-dot.d1 { width: 44vw; height: 44vw; right: -14vw; top: -16vw; }
   .hero-dot.d2 { width: 9vw; height: 9vw; right: 30vw; top: 30vh; background: var(--ink); }
   .hero-dot.d2 { cursor: pointer; }
-  .hero-word { pointer-events: none; }
+  .hero-word { pointer-events: none; position: relative; z-index: 3; }
+  .hero-dot.d2 { z-index: 2; }  /* above the section so real clicks land, below the letters */
   .hero-dot.d2 .doorfr { position: absolute; left: 38%; top: 30%; width: 24%; height: 40%; border: 0.16vw solid #fff; overflow: hidden; opacity: 0; transform: scale(0.6); transition: opacity 0.35s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .hero-dot.d2.hasdoor .doorfr { opacity: 1; transform: scale(1); }
   .hero-dot.d2 .doorbud { position: absolute; bottom: -39%; left: -30%; width: 160%; image-rendering: pixelated; transform: translateX(115%); }
@@ -1108,8 +1109,8 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
       dotBusy = true;
       seq([['hasdoor', 1, 0], ['peek', 1, 450], ['exc', 1, 750], ['peek', 0, 2050], ['exc', 0, 2050], ['hasdoor', 0, 2600]], 3200);
     };
-    if (!localStorage.getItem('db-door-greeted')) {
-      setTimeout(() => { doorGreet(); localStorage.setItem('db-door-greeted', '1'); }, 2400);
+    if (!localStorage.getItem('db-door-greeted2')) {
+      setTimeout(() => { doorGreet(); localStorage.setItem('db-door-greeted2', '1'); }, 2400);
     }
     const dotEyes = () => { if (dotBusy) return; d2.classList.add('eyes'); setTimeout(() => d2.classList.remove('eyes'), 1700); };
     const dotHop = () => { if (dotBusy) return; d2.classList.add('hop'); setTimeout(() => d2.classList.remove('hop'), 900); };
