@@ -57,12 +57,35 @@
   .hero-dot { position: absolute; clip-path: polygon(65% 0%, 65% 5%, 75% 5%, 75% 10%, 85% 10%, 85% 15%, 90% 15%, 90% 20%, 90% 25%, 95% 25%, 95% 30%, 95% 35%, 100% 35%, 100% 40%, 100% 45%, 100% 50%, 100% 55%, 100% 60%, 100% 65%, 95% 65%, 95% 70%, 95% 75%, 90% 75%, 90% 80%, 90% 85%, 85% 85%, 85% 90%, 75% 90%, 75% 95%, 65% 95%, 65% 100%, 35% 100%, 35% 95%, 25% 95%, 25% 90%, 15% 90%, 15% 85%, 10% 85%, 10% 80%, 10% 75%, 5% 75%, 5% 70%, 5% 65%, 0% 65%, 0% 60%, 0% 55%, 0% 50%, 0% 45%, 0% 40%, 0% 35%, 5% 35%, 5% 30%, 5% 25%, 10% 25%, 10% 20%, 10% 15%, 15% 15%, 15% 10%, 25% 10%, 25% 5%, 35% 5%, 35% 0%); background-color: var(--red); z-index: -1; }
   .hero-dot.d1 { width: 44vw; height: 44vw; right: -14vw; top: -16vw; }
   .hero-dot.d2 { width: 9vw; height: 9vw; right: 30vw; top: 30vh; background: var(--ink); }
-  .hero-dot.d2 .doorfr { position: absolute; left: 30%; top: 22%; width: 36%; height: 54%; border: 0.24vw solid #fff; overflow: hidden; }
-  .hero-dot.d2 .doorbud { position: absolute; bottom: 3%; left: 8%; width: 84%; image-rendering: pixelated; animation: doorpeek 11s ease-in-out infinite; }
-  @keyframes doorpeek { 0%, 30% { transform: translateY(108%); } 38%, 44% { transform: translateY(2%) rotate(0); } 47% { transform: translateY(0) rotate(-4deg); } 53% { transform: translateY(0) rotate(4deg); } 57% { transform: translateY(2%) rotate(0); } 64%, 100% { transform: translateY(108%); } }
-  .hero-dot.d2 .doorpanel { position: absolute; inset: 0; background: var(--red); animation: doorswing 11s steps(5) infinite; }
+  .hero-dot.d2 { cursor: pointer; }
+  .hero-word { pointer-events: none; }
+  .hero-dot.d2 .doorfr { position: absolute; left: 38%; top: 30%; width: 24%; height: 40%; border: 0.16vw solid #fff; overflow: hidden; opacity: 0; transform: scale(0.6); transition: opacity 0.35s, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .hero-dot.d2.hasdoor .doorfr { opacity: 1; transform: scale(1); }
+  .hero-dot.d2 .doorbud { position: absolute; bottom: -39%; left: -30%; width: 160%; image-rendering: pixelated; transform: translateX(115%); }
+  .hero-dot.d2.budout .doorbud { animation: budgreet 3.1s ease-in-out 1 both; }
+  @keyframes budgreet { 0% { transform: translateX(115%); } 16% { transform: translateX(0) rotate(0); } 30% { transform: translateX(0) rotate(-6deg); } 44% { transform: translateX(0) rotate(6deg); } 58% { transform: translateX(0) rotate(-6deg); } 72% { transform: translateX(0) rotate(0); } 100% { transform: translateX(115%); } }
+  .hero-dot.d2.peek .doorbud { animation: budpeek 1.5s ease 1 both; }
+  @keyframes budpeek { 0% { transform: translateX(115%); } 28% { transform: translateX(42%); } 74% { transform: translateX(42%); } 100% { transform: translateX(115%); } }
+  .hero-dot.d2 .doorpanel { position: absolute; inset: 0; background: var(--red); transform: translateX(0); transition: transform 0.45s steps(4); }
+  .hero-dot.d2.dooropen .doorpanel { transform: translateX(-104%); }
+  .hero-dot.d2.peek .doorpanel { transform: translateX(-56%); }
   .hero-dot.d2 .doorpanel::after { content: ''; position: absolute; right: 9%; top: 44%; width: 15%; height: 12%; background: #fff; }
-  @keyframes doorswing { 0%, 25% { transform: translateX(0); } 33%, 61% { transform: translateX(-104%); } 69%, 100% { transform: translateX(0); } }
+  .hero-dot.d2 .deye { position: absolute; width: 9%; height: 13%; background: #fff; top: 37%; opacity: 0; }
+  .hero-dot.d2 .deye.l { left: 29%; }
+  .hero-dot.d2 .deye.r { right: 29%; }
+  .hero-dot.d2.eyes .deye { opacity: 1; animation: dblink 1.6s steps(1) 1; }
+  @keyframes dblink { 0%, 20% { transform: scaleY(1); } 24%, 32% { transform: scaleY(0.12); } 36%, 60% { transform: scaleY(1); } 64%, 72% { transform: scaleY(0.12); } 76%, 100% { transform: scaleY(1); } }
+  .hero-dot.d2.hop { animation: dothop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 1; }
+  @keyframes dothop { 0%, 100% { transform: translateY(0); } 34% { transform: translateY(-9%); } 62% { transform: translateY(0) scaleY(0.93) scaleX(1.05); } 82% { transform: translateY(-3%); } }
+  .hero-dot.d2 .dspark { position: absolute; left: 58%; top: 22%; width: 8%; height: 8%; background: #fff; opacity: 0; }
+  .hero-dot.d2.spark .dspark { animation: dtwinkle 1.4s steps(2) 1; }
+  @keyframes dtwinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 25% { opacity: 1; transform: scale(1.25); } 50% { opacity: 0.4; transform: scale(0.8); } 75% { opacity: 1; transform: scale(1.1); } }
+  .hero-dot.d2.knock { animation: dknock 0.42s ease 1; }
+  @keyframes dknock { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2.5%); } 50% { transform: translateX(2.5%); } 75% { transform: translateX(-1.5%); } }
+  .hero-dot.d2 .dexc { position: absolute; left: 44%; top: 6%; color: #fff; font: 900 1.1vw 'Courier New', monospace; opacity: 0; }
+  .hero-dot.d2.exc .dexc { opacity: 1; }
+  .hero-dot.d2 .dburst { position: absolute; left: 47%; top: 47%; width: 6%; height: 6%; animation: dburstfly 0.85s ease-out forwards; pointer-events: none; }
+  @keyframes dburstfly { to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
   .hero-dot.d3 { width: 4vw; height: 4vw; right: 26vw; top: 16vh; }
   /* the parade: buds cross the bottom of the hero forever */
   .parade { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; border-top: 4px solid var(--ink); overflow: hidden; }
@@ -427,7 +450,7 @@
 <!-- ———————————————— HERO ———————————————— -->
 <section class="hero">
   <div class="hero-dot d1 dots-red"></div>
-  <div class="hero-dot d2"><div class="doorfr"><img class="doorbud" src="assets/characters-full/sp-lowbatt-f1.png" alt="a shy bud peeking out of a tiny door"><span class="doorpanel"></span></div></div>
+  <div class="hero-dot d2"><span class="deye l"></span><span class="deye r"></span><span class="dspark"></span><span class="dexc">!</span><div class="doorfr"><img class="doorbud" src="assets/characters-full/sp-lowbatt-f1.png" alt="a shy bud peeking out of a tiny door"><span class="doorpanel"></span></div></div>
   <div class="hero-dot d3"></div>
   <h1 class="hero-word">
     <span class="w1">DOODLE</span>
@@ -1066,6 +1089,58 @@ const DOSSIER = {"wheel": [{"n": "Pixel", "d": "the smallest unit of display", "
   document.getElementById('lbClose').addEventListener('click', lbHide);
   lbO.addEventListener('click', (e) => { if (e.target === lbO) lbHide(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lbHide(); });
+
+  // ——— the black dot: somebody lives behind it ———
+  const d2 = document.querySelector('.hero-dot.d2');
+  if (d2) {
+    let dotBusy = false;
+    const seq = (steps, doneAt) => {
+      steps.forEach(([cls, on, t]) => setTimeout(() => d2.classList[on ? 'add' : 'remove'](cls), t));
+      setTimeout(() => { dotBusy = false; }, doneAt);
+    };
+    const doorGreet = () => {          // the full first-visit hello
+      if (dotBusy) return;
+      dotBusy = true;
+      seq([['hasdoor', 1, 0], ['dooropen', 1, 800], ['budout', 1, 1250], ['budout', 0, 4400], ['dooropen', 0, 4600], ['hasdoor', 0, 5500]], 6000);
+    };
+    const doorPeek = () => {           // a crack, one look, gone
+      if (dotBusy) return;
+      dotBusy = true;
+      seq([['hasdoor', 1, 0], ['peek', 1, 450], ['exc', 1, 750], ['peek', 0, 2050], ['exc', 0, 2050], ['hasdoor', 0, 2600]], 3200);
+    };
+    if (!localStorage.getItem('db-door-greeted')) {
+      setTimeout(() => { doorGreet(); localStorage.setItem('db-door-greeted', '1'); }, 2400);
+    }
+    const dotEyes = () => { if (dotBusy) return; d2.classList.add('eyes'); setTimeout(() => d2.classList.remove('eyes'), 1700); };
+    const dotHop = () => { if (dotBusy) return; d2.classList.add('hop'); setTimeout(() => d2.classList.remove('hop'), 900); };
+    const dotSpark = () => { d2.classList.add('spark'); setTimeout(() => d2.classList.remove('spark'), 1500); };
+    const ambient = [dotEyes, dotEyes, dotHop, dotSpark];
+    (function dotLoop() {
+      setTimeout(() => { ambient[Math.floor(Math.random() * ambient.length)](); dotLoop(); }, 12000 + Math.random() * 16000);
+    })();
+    let knocks = 0;
+    d2.addEventListener('click', () => {
+      if (dotBusy) return;
+      knocks++;
+      d2.classList.add('knock');
+      setTimeout(() => d2.classList.remove('knock'), 450);
+      if (knocks % 3 === 0) {
+        setTimeout(doorPeek, 380);     // third knock: the resident answers
+      } else {
+        setTimeout(dotEyes, 320);      // startled
+        const pal = ['#ff8fc7', '#ffd400', '#9fe8c0', '#a8e0ff', '#c9a7f5'];
+        for (let i = 0; i < 5; i++) {
+          const p = document.createElement('span');
+          p.className = 'dburst';
+          p.style.setProperty('--dx', Math.random() * 170 - 85 + 'px');
+          p.style.setProperty('--dy', Math.random() * 170 - 85 + 'px');
+          p.style.background = pal[i];
+          d2.appendChild(p);
+          setTimeout(() => p.remove(), 950);
+        }
+      }
+    });
+  }
 
   // ——— the business-card bud: idle tricks, and pettable ———
   const bigdot = document.querySelector('.about .bigdot');
