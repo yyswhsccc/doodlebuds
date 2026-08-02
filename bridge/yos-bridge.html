@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>moving day</title>
+<script>
+/* yos storage bridge: this page lives on the OLD origin
+   (yyswhsccc.github.io), so top-level it can read the storage that the
+   personal-website left behind before the custom-domain move. it packs
+   every key into the URL fragment and bounces straight back. */
+(function () {
+  var HOME = 'https://yongshan.is-a.dev/';
+  var back = HOME;
+  try {
+    var m = location.hash.match(/#return=([^&]+)/);
+    if (m) {
+      var r = decodeURIComponent(m[1]);
+      if (r.indexOf(HOME) === 0) { back = r.split('#')[0]; }
+    }
+    var keys = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      keys[k] = localStorage.getItem(k);
+    }
+    var blob = btoa(unescape(encodeURIComponent(JSON.stringify(keys))));
+    location.replace(back + '#yosimport=' + blob);
+  } catch (e) {
+    location.replace(back + '#yosimport=' + btoa('{}'));
+  }
+})();
+</script>
